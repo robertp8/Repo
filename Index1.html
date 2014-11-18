@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="UTF-8">
+	<title>Home</title>
+	<link href="css/stylesheet.css" rel="stylesheet" type="text/css" media="screen">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&=geometry&sensor=false&key=AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk"></script>
+	</head>
+
+<!--<body onload="getLocation()">-->
+<body>
+
+	<div id="masthead">
+		<h1>Malama Natural Disaster Awareness</h1>
+	</div>
+
+	<div id="sidebarContent">
+		<div id="sidebar">
+			
+			<div id="closeSidebar">X</div>
+				<ul>
+					<li>Hazards</li>
+					<ul>
+						<li><input type="radio" name="hazard" value="Tsunami" id="tsunami">Tsunami</input></li>
+						<li><input type="radio" name="hazard" value="Hurricane" id="hurricane">Hurricane</input></li>
+						<li><input type="radio" name="hazard" value="LavaFlow" id="lavaflow">Lava Flow</input></li>
+						<li><input type="radio" name="hazard" value="Vog" id="vog">Vog</input></li>
+					</ul>
+				</ul>
+				<!--<input type="button" value="View Map" id="select">-->
+		</div>
+
+		<div id="content">	
+			
+			<div id="sideBarBtn">more info</div>
+			<h2>Please Enter A Physical Adress</h2>
+			
+			<center>
+				<div id="map-canvas"></div>
+				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
+				<p style="color:white;">Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
+				<p style="color:white;">Value: <output id="locOutput" type="text" placeholder="WithinEvacZone"></output></p>
+				<p id="message"></p>
+			</center>
+			<!--AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk-->
+		</div>
+	</div>
+		
+	<div id="footer">
+		<p>IDK</p>
+	</div>
+	<script>
+		$(document).ready(function(){
+		
+			$("#sidebar").hide();
+			
+			$("#closeSidebar").click(function(){
+				$("#sidebar").hide();
+				$("#content").css("width", "100%");
+				$("#sideBarBtn").show();
+			});
+			
+			$("#sideBarBtn").click(function(){
+				$(this).hide();
+				$("#content").css("width", "85%");
+				$("#sidebar").show();
+			});
+		});
+		
+		/*var x = document.getElementByID("message");
+
+		function getLocation() {
+		
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} else { 
+				x.innerHTML = "Geolocation is not supported by this browser.";
+			}
+		}*/
+
+		//function showPosition(position) {
+		
+		function initialize(){
+			var markers = [];
+			var lat = (19.542915); 
+			var lon = (-155.665857);
+
+			var hawaii = new google.maps.LatLng(lat, lon);
+			var mapProp = {
+				center: hawaii,
+				zoom: 8,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+		
+			var map = new google.maps.Map(document.getElementById('map-canvas'), mapProp);
+		
+			<!--evacuation zone polygon-->
+			var triangleCoords = [
+				new google.maps.LatLng(25.774252, -80.190262),
+				new google.maps.LatLng(18.466465, -66.118292),
+				new google.maps.LatLng(32.321384, -64.75737),
+				new google.maps.LatLng(27.774252, -81.190262),
+				new google.maps.LatLng(25.774252, -80.190262)	
+			];
+			
+			console.log(triangleCoords);
+			var hawaiiTriangle = new google.maps.Polygon({
+				paths: triangleCoords
+            });
+			
+			hawaiiTriangle.setMap(map);
+			
+			//Search bar and coordinates
+			var input = /** @type {HTMLInputElement} */(document.getElementById('pac-input'));
+			map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+		  
+			var searchBox = new google.maps.places.SearchBox(
+			/** @type {HTMLInputElement} */(input));
+			
+			// [START region_getplaces]
+			// Listen for the event fired when the user selects an item from the
+			// pick list. Retrieve the matching places for that item.
+			google.maps.event.addListener(searchBox, 'places_changed', function() {
+				var places = searchBox.getPlaces();
+
+				if (places.length == 0) {
+					return;
+				}
+				for (var i = 0, marker; marker = markers[i]; i++) {
+					marker.setMap(null);
+				}
+
+				// For each place, get the icon, place name, and location, output location
+				markers = [];
+				var txtOutput = document.getElementById("txtOutput");
+				var bounds = new google.maps.LatLngBounds();
+				for (var i = 0, place; place = places[i]; i++) {
+					var image = {
+						url: place.icon,
+						size: new google.maps.Size(71, 71),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(17, 34),
+						scaledSize: new google.maps.Size(25, 25)
+					};
+
+					// Create a marker for each place.
+					var marker = new google.maps.Marker({
+						map: map,
+						icon: image,
+						title: place.name,
+						position: place.geometry.location
+					});
+		   
+					markers.push(marker);
+					bounds.extend(place.geometry.location);
+				}
+				map.fitBounds(bounds);
+				
+				//Displays Coordinates (lat, long)
+				var grabLoc = marker.position;
+				txtOutput.value = grabLoc;
+				
+				
+				<!--check if point is within the evacuation zone-->
+				var locOutput = document.getElementById("locOutput");
+				if (google.maps.geometry.poly.containsLocation(grabLoc, hawaiiTriangle)){
+					locOutput.value = '1';
+				}else{
+					locOutput.value = '0';
+				}
+		  
+			});
+			
+			// [END region_getplaces]
+			// Bias the SearchBox results towards places that are within the bounds of the
+			// current map's viewport.
+			google.maps.event.addListener(map, 'bounds_changed', function() {
+				var bounds = map.getBounds();
+				searchBox.setBounds(bounds);
+			});
+			
+			//KML Layers
+			var tsunamiEvac = new google.maps.KmlLayer({
+				//url: 'http://oos.soest.hawaii.edu/pacioos/kml/zzz_obsolete/tsunami_evac_zones.kml'
+				url: 'http://geocommons.com/overlays/3307.kml'
+				
+			});
+			
+			var tsunamiOutline = new google.maps.KmlLayer({
+				url: 'http://oos.soest.hawaii.edu/pacioos/kml/zzz_obsolete/tsunami_evac_zones.kml'
+			});
+			
+			$("#tsunami").click(function(){
+				tsunamiEvac.setMap(null);
+				tsunamiOutline.setMap(map);
+			});
+			
+			$("#hurricane").click(function(){
+				tsunamiOutline.setMap(null);
+				tsunamiEvac.setMap(map);
+			});
+			
+			function showError(error) {
+				switch(error.code) {
+					case error.PERMISSION_DENIED:
+						x.innerHTML = "User denied the request for Geolocation."
+						break;
+					case error.POSITION_UNAVAILABLE:
+						x.innerHTML = "Location information is unavailable."
+						break;
+					case error.TIMEOUT:
+						x.innerHTML = "The request to get user location timed out."
+						break;
+					case error.UNKNOWN_ERROR:
+						x.innerHTML = "An unknown error occurred."
+						break;
+				}
+			}
+			
+		}
+		
+		//google.maps.event.addDomListener(window, 'load', showPosition);
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+	
+</body>
+</html>
