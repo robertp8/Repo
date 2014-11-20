@@ -10,6 +10,9 @@
 	<script type="text/javascript" src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>
 	<script type="text/javascript" src="http://geoxml3.googlecode.com/svn/trunk/ProjectedOverlay.js"></script>
 	<script type="text/javascript" src="js/v3_epoly.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+  
 	</head>
 
 <!--<body onload="getLocation()">-->
@@ -44,7 +47,7 @@
 				<div id="map-canvas"></div>
 				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
 				<p style="color:white;">Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
-				<p style="color:white;">Value: <output id="locOutput" type="text" placeholder="WithinEvacZone"></output></p>
+					<p style="color: white;">Value: <output id="locOutput" type="text" placeholder="WithinEvacZone"></output></p>
 				<p id="message"></p>
 			</center>
 			<!--AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk-->
@@ -70,9 +73,15 @@
 				$("#content").css("width", "85%");
 				$("#sidebar").show();
 			});
+			
+			/*$(function(){
+				$("dialog").dialog({
+					autoOpen: false,
+					resizable: false,
+					width: "auto"
+				});
+			});*/
 		});
-		
-		
 		
 		//Shows current location
 		/*var x = document.getElementByID("message");
@@ -180,12 +189,13 @@
 					};	
 					
 					//Single out a certain polygon for visualization
-					//doc[0].gpolygons[12].setMap(map);
+					//doc[0].gpolygons[6].setMap(map);
 					
 					//Function contains "Contains" from v3_epoly.js file
 					//Determines if a function is within a certain polygon
 					if(doc[0].gpolygons[0].Contains(grabLoc)){
 						locOutput.value = '1';
+						$("#dialog").dialog('open');
 					}else if(doc[0].gpolygons[1].Contains(grabLoc)){
 						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[2].Contains(grabLoc)){
@@ -243,6 +253,7 @@
 				};
 			});
 
+			
 			// [END region_getplaces]
 			// Bias the SearchBox results towards places that are within the bounds of the
 			// current map's viewport.
@@ -262,18 +273,20 @@
 			geoXml.parse('datafiles/tsunami_evac_zones.kml');
 			
 			function displayKml(doc){
-				for(var i = 0; i < 16; i++){
+				var numberOfPolys = doc[0].gpolygons.length;
+				
+				for(var i = 0; i < numberOfPolys; i++){
 					doc[0].gpolygons[i].setMap(null);
 				}
 				
 				$("#tsunami").click(function(){
-					for(var i = 0; i < 16; i++){
+					for(var i = 0; i < numberOfPolys; i++){
 						doc[0].gpolygons[i].setMap(map);
 					}
 				});	
 				
 				$("#hurricane").click(function(){
-					for(var i = 0; i < 16; i++){
+					for(var i = 0; i < numberOfPolys; i++){
 						doc[0].gpolygons[i].setMap(null);
 					}
 				});
@@ -298,7 +311,6 @@
 				tsunamiEvac.setMap(null);
 			});*/
 			
-			
 			function showError(error) {
 				switch(error.code) {
 					case error.PERMISSION_DENIED:
@@ -321,6 +333,5 @@
 		//google.maps.event.addDomListener(window, 'load', showPosition);
 		google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
-	
 </body>
 </html>
