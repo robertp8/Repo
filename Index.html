@@ -159,10 +159,11 @@
 				
 				//Kml Parser that enables to render kml polygons as Google map api objects
 				var geoXml = new geoXML3.parser({
-				map: map,
-				singleInfoWindow: true,
-				afterParse: useTheData
+					map: map,
+					singleInfoWindow: true,
+					afterParse: useTheData
 				});
+	
 				//Allows to parse files and render them from local files
 				geoXml.parse('datafiles/tsunami_evac_zones.kml');
 				
@@ -173,7 +174,7 @@
 					var numPolys = doc[0].gpolygons.length;
 					
 					// Loop through each polygon
-					for(var i = 0; i < numPolys - 1; i++){
+					for(var i = 0; i < numPolys; i++){
 						//hide all the polygons within kml file
 						doc[0].gpolygons[i].setMap(null);
 					};	
@@ -186,37 +187,37 @@
 					if(doc[0].gpolygons[0].Contains(grabLoc)){
 						locOutput.value = '1';
 					}else if(doc[0].gpolygons[1].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[2].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[3].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[4].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[5].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[6].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[7].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[8].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[9].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[10].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[11].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[12].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[13].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[14].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[15].Contains(grabLoc)){
-						locOutput.value = '1';
+						locOutput.value = '1 Tsunami';
 					}else{
-						locOutput.value = '0';
+						locOutput.value = '0 Tsunami';
 					}
 					
 					<!--evacuation zone polygon-->
@@ -250,7 +251,33 @@
 				searchBox.setBounds(bounds);
 			});
 			
-		
+			//Kml Parser that enables to render kml polygons as Google map api objects
+			var geoXml = new geoXML3.parser({
+				map: map,
+				singleInfoWindow: true,
+				afterParse: displayKml
+			});
+
+			//Allows to parse files and render them from local files
+			geoXml.parse('datafiles/tsunami_evac_zones.kml');
+			
+			function displayKml(doc){
+				for(var i = 0; i < 16; i++){
+					doc[0].gpolygons[i].setMap(null);
+				}
+				
+				$("#tsunami").click(function(){
+					for(var i = 0; i < 16; i++){
+						doc[0].gpolygons[i].setMap(map);
+					}
+				});	
+				
+				$("#hurricane").click(function(){
+					for(var i = 0; i < 16; i++){
+						doc[0].gpolygons[i].setMap(null);
+					}
+				});
+			}
 			//KML Layers
 			/*var tsunamiEvac = new google.maps.KmlLayer({
 				url: 'http://oos.soest.hawaii.edu/pacioos/kml/zzz_obsolete/tsunami_evac_zones.kml'
