@@ -1,19 +1,19 @@
 <!DOCTYPE html>
+<!--Google maps idKey: AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk-->
 <html>
 <head>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 	<meta charset="UTF-8">
 	<title>Home</title>
 	<link href="css/stylesheet.css" rel="stylesheet" type="text/css" media="screen">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="http://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&=geometry&sensor=false&key=AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 	<script type="text/javascript" src="http://geoxml3.googlecode.com/svn/branches/polys/geoxml3.js"></script>
 	<script type="text/javascript" src="http://geoxml3.googlecode.com/svn/trunk/ProjectedOverlay.js"></script>
 	<script type="text/javascript" src="js/v3_epoly.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-  
-	</head>
+</head>
 
 <!--<body onload="getLocation()">-->
 <body>
@@ -46,11 +46,12 @@
 			<center>
 				<div id="map-canvas"></div>
 				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
-				<p style="color:white;">Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
-					<p style="color: white;">Value: <output id="locOutput" type="text" placeholder="WithinEvacZone"></output></p>
+				<div id="Dialog" title="Basic Dailog">
+					<p>Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
+					<p>Value: <output id="locOutput" type="text" placeholder="WithinEvacZone"></output></p>
+				</div>
 				<p id="message"></p>
 			</center>
-			<!--AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk-->
 		</div>
 	</div>
 		
@@ -73,14 +74,6 @@
 				$("#content").css("width", "85%");
 				$("#sidebar").show();
 			});
-			
-			/*$(function(){
-				$("dialog").dialog({
-					autoOpen: false,
-					resizable: false,
-					width: "auto"
-				});
-			});*/
 		});
 		
 		//Shows current location
@@ -95,8 +88,6 @@
 			}
 		}*/
 
-		//function showPosition(position) {
-		
 		function initialize(){
 			var markers = [];
 			//Lat/Long for Hawaii coordinates
@@ -230,6 +221,15 @@
 						locOutput.value = '0 Tsunami';
 					}
 					
+					//Dialog box 
+					$(function() {
+						$( "#Dialog" ).dialog({
+							//autoOpen: false,
+							modal: true,
+							width: 500
+						});
+					  });
+					
 					<!--evacuation zone polygon-->
 					/*var zoneCoords1 = [
 						//new google.maps.LatLng(doc[0].gpolygons[8].coords)
@@ -272,9 +272,12 @@
 			//Allows to parse files and render them from local files
 			geoXml.parse('datafiles/tsunami_evac_zones.kml');
 			
+			//This function will display any of the kml polygons, 
+			//depending on which type of hazard the user chooses.
 			function displayKml(doc){
 				var numberOfPolys = doc[0].gpolygons.length;
 				
+				//Initially nullify all maps
 				for(var i = 0; i < numberOfPolys; i++){
 					doc[0].gpolygons[i].setMap(null);
 				}
@@ -291,6 +294,7 @@
 					}
 				});
 			}
+			
 			//KML Layers
 			/*var tsunamiEvac = new google.maps.KmlLayer({
 				url: 'http://oos.soest.hawaii.edu/pacioos/kml/zzz_obsolete/tsunami_evac_zones.kml'
@@ -329,9 +333,8 @@
 			}
 			
 		}
-		
-		//google.maps.event.addDomListener(window, 'load', showPosition);
 		google.maps.event.addDomListener(window, 'load', initialize);
 	</script>
+	
 </body>
 </html>
