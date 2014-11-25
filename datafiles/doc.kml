@@ -7,7 +7,7 @@
   <Folder id="khFolder778">
     <name>Boundaries</name>
     <description>Hazard zone boundaries are approximate. The change in the degree of hazard from one zone to the next is generally gradual rather than abrupt, and the change can occur over the distance of a mile or more. Within a single hazard zone, the severity of hazard may vary on a scale too fine to map. These variations may be the result of gradual changes that extend across the entire zone. For example, the hazard posed by lava flows decreases gradually as the distance from vents increases.</description>
-    <Placemark id="khPlacemark779">
+    <!--<Placemark id="khPlacemark779">
       <name>boundary</name>
       <Style id="khStyle780">
         <LineStyle id="khLineStyle784">
@@ -321,7 +321,7 @@
         </outerBoundaryIs>
       </Polygon>
     </Placemark>
-    <Placemark id="khPlacemark912">
+  <Placemark id="khPlacemark912">
       <name>boundary</name>
       <Style id="khStyle913">
         <LineStyle id="khLineStyle917">
@@ -366,7 +366,7 @@
           </LinearRing>
         </outerBoundaryIs>
       </Polygon>
-    </Placemark>
+    </Placemark>-->
   </Folder>
   <ScreenOverlay>
     <name>USGS Logo</name>

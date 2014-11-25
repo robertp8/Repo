@@ -46,9 +46,10 @@
 			<center>
 				<div id="map-canvas"></div>
 				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
-				<div id="Dialog" title="Basic Dailog">
+				<div id="Dialog" title="Hazard Data">
 					<p>Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
-					<p>Value: <output id="locOutput" type="text" placeholder="WithinEvacZone"></output></p>
+					<p>Tsunami Zone: <output id="tsunamiZone" type="text" placeholder="WithinEvacZone"></output></p>
+					<p>Lava Zone: <output id="lavaZone" type="text" placeholder="WithinEvacZone"></output></p>
 				</div>
 				<p id="message"></p>
 			</center>
@@ -174,6 +175,7 @@
 					var numPolys = doc[0].gpolygons.length;
 					var numPolys2 = doc[1].gpolygons.length;
 					
+					
 					// Loop through each polygon
 					for(var i = 0; i < numPolys; i++){
 						//hide all the polygons within kml file
@@ -191,39 +193,75 @@
 					//Function contains "Contains" from v3_epoly.js file
 					//Determines if a function is within a certain polygon
 					if(doc[0].gpolygons[0].Contains(grabLoc)){
-						locOutput.value = '1';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[1].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[2].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[3].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[4].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[5].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[6].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[7].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[8].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[9].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[10].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[11].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[12].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[13].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[14].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[15].Contains(grabLoc)){
-						locOutput.value = '1 Tsunami';
+						tsunamiZone.value = '1';
 					}else{
-						locOutput.value = '0 Tsunami';
+						tsunamiZone.value = '0';
+					}
+					
+					if(doc[1].gpolygons[0].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[0].name;
+					}else if(doc[1].gpolygons[1].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[1].name;
+					}else if(doc[1].gpolygons[2].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[2].name;
+					}else if(doc[1].gpolygons[3].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[3].name;
+					}else if(doc[1].gpolygons[4].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[4].name;
+					}else if(doc[1].gpolygons[5].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[5].name;
+					}else if(doc[1].gpolygons[6].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[6].name;
+					}else if(doc[1].gpolygons[7].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[7].name;
+					}else if(doc[1].gpolygons[8].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[8].name;
+					}else if(doc[1].gpolygons[9].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[9].name;
+					}else if(doc[1].gpolygons[10].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[10].name;
+					}else if(doc[1].gpolygons[11].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[11].name;
+					}else if(doc[1].gpolygons[12].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[12].name;
+					}else if(doc[1].gpolygons[13].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[13].name;
+					}else if(doc[1].gpolygons[14].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[14].name;
+					}else if(doc[1].gpolygons[15].Contains(grabLoc)){
+						lavaZone.value = doc[1].placemarks[15].name;
+					}else {
+						lavaZone.value = '0';
 					}
 					
 					//Dialog box 
@@ -282,6 +320,10 @@
 			function displayKml(doc){
 				var numberOfPolys = doc[0].gpolygons.length;
 				var numberOfPolys2 = doc[1].gpolygons.length;
+				var value = null;
+				
+				//console.log(numberOfPolys2);
+				//console.log(doc[1].placemarks.length);
 				
 				//Initially nullify all maps for kml 1
 				for(var i = 0; i < numberOfPolys; i++){
