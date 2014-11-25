@@ -30,8 +30,8 @@
 					<li>Hazards</li>
 					<ul>
 						<li><input type="radio" name="hazard" value="Tsunami" id="tsunami">Tsunami</input></li>
-						<li><input type="radio" name="hazard" value="Hurricane" id="hurricane">Hurricane</input></li>
 						<li><input type="radio" name="hazard" value="LavaFlow" id="lavaflow">Lava Flow</input></li>
+						<li><input type="radio" name="hazard" value="Hurricane" id="hurricane">Hurricane</input></li>
 						<li><input type="radio" name="hazard" value="Vog" id="vog">Vog</input></li>
 					</ul>
 				</ul>
@@ -165,19 +165,25 @@
 				});
 	
 				//Allows to parse files and render them from local files
-				geoXml.parse('datafiles/tsunami_evac_zones.kml');
+				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml']);
 				
 				//allows objects to be manipulated after parse renders objects
 				function useTheData(doc) {
 					// Geodata handling goes here, using JSON properties of the doc object
 					//Number of polygons within Kml file
 					var numPolys = doc[0].gpolygons.length;
+					var numPolys2 = doc[1].gpolygons.length;
 					
 					// Loop through each polygon
 					for(var i = 0; i < numPolys; i++){
 						//hide all the polygons within kml file
 						doc[0].gpolygons[i].setMap(null);
 					};	
+					
+					for(var i = 0; i < numPolys2; i++){
+						//hide all the polygons within kml file
+						doc[1].gpolygons[i].setMap(null);
+					};
 					
 					//Single out a certain polygon for visualization
 					//doc[0].gpolygons[6].setMap(map);
@@ -186,7 +192,6 @@
 					//Determines if a function is within a certain polygon
 					if(doc[0].gpolygons[0].Contains(grabLoc)){
 						locOutput.value = '1';
-						$("#dialog").dialog('open');
 					}else if(doc[0].gpolygons[1].Contains(grabLoc)){
 						locOutput.value = '1 Tsunami';
 					}else if(doc[0].gpolygons[2].Contains(grabLoc)){
@@ -270,27 +275,48 @@
 			});
 
 			//Allows to parse files and render them from local files
-			geoXml.parse('datafiles/tsunami_evac_zones.kml');
+			geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml']);
 			
 			//This function will display any of the kml polygons, 
 			//depending on which type of hazard the user chooses.
 			function displayKml(doc){
 				var numberOfPolys = doc[0].gpolygons.length;
+				var numberOfPolys2 = doc[1].gpolygons.length;
 				
-				//Initially nullify all maps
+				//Initially nullify all maps for kml 1
 				for(var i = 0; i < numberOfPolys; i++){
 					doc[0].gpolygons[i].setMap(null);
+				}
+				
+				//Initially nullify all maps for kml 2
+				for(var i = 0; i < numberOfPolys2; i++){
+					doc[1].gpolygons[i].setMap(null);
 				}
 				
 				$("#tsunami").click(function(){
 					for(var i = 0; i < numberOfPolys; i++){
 						doc[0].gpolygons[i].setMap(map);
 					}
+					for(var i = 0; i < numberOfPolys2; i++){
+						doc[1].gpolygons[i].setMap(null);
+					}
 				});	
 				
 				$("#hurricane").click(function(){
 					for(var i = 0; i < numberOfPolys; i++){
 						doc[0].gpolygons[i].setMap(null);
+					}
+					for(var i = 0; i < numberOfPolys2; i++){
+						doc[1].gpolygons[i].setMap(null);
+					}
+				});
+				
+				$("#lavaflow").click(function(){
+					for(var i = 0; i < numberOfPolys; i++){
+						doc[0].gpolygons[i].setMap(null);
+					}
+					for(var i = 0; i < numberOfPolys2; i++){
+						doc[1].gpolygons[i].setMap(map);
 					}
 				});
 			}
