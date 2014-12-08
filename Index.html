@@ -364,7 +364,7 @@
 				});
 	
 				//Allows to parse files and render them from local files
-				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
+				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwindTest2.kml']);
 				
 				//allows objects to be manipulated after parse renders objects
 				function useTheData(doc) {
@@ -579,6 +579,21 @@
 						lavaZone.value = '0';
 					}
 					
+					//Hurricane Zones
+					var hurrOnBigIsle = 0; //0=location outside big island. 1=on big island
+					for(var i = 0; i < numPolys3; i++)
+					{
+						if(doc[2].gpolygons[i].Contains(grabLoc))
+						{
+							hurricaneZone.value = doc[2].placemarks[i].name;
+							onBigIsleHurr = 1;
+							break
+						}
+					}	
+					if(hurrOnBigIsle==0)  //point not on big island then value="Not on Big Island"
+					{
+						hurricaneZone.value = "Outside Big Island";
+					}
 					
 					
 					$("#HazArray").show();
