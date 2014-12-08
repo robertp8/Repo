@@ -122,6 +122,28 @@
 								</li>
 							</ul>
 						</li>
+						<li><p>Hurricane Zone: <output id="hurricaneZone" type="text" placeholder="WithinEvacZone"></output></p>
+							<ul>
+								<li>
+									<div id="hurrData">
+										<h3>Description</h3>
+										<div>
+											<p><output id="hurrDes" type="text"></output></p>
+										</div>
+										
+										<h3>Mitigation</h3>
+										<div>
+											<p><output id="hurrMit" type="text"></output></p>
+										</div>
+										
+										<h3>Source</h3>
+										<div>
+											<p><output id="hurrSrc" type="text"></output></p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 				<p id="message"></p>
@@ -175,6 +197,13 @@
 			
 			$(function(){
 				$("#lavaData").accordion({
+					heightStyle: "content",
+					event: "click hoverintent"
+				});
+			});
+			
+			$(function(){
+				$("#hurrData").accordion({
 					heightStyle: "content",
 					event: "click hoverintent"
 				});
