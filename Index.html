@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<title>Home</title>
 	<link href="css/stylesheet.css" rel="stylesheet" type="text/css" media="screen">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -19,7 +19,9 @@
 <body>
 
 	<div id="masthead">
-		<h1>Malama Natural Disaster Awareness</h1>
+		<center>
+			<h1>Malama Natural Disaster Awareness</h1>
+		</center>
 	</div>
 
 	<div id="sidebarContent">
@@ -41,15 +43,86 @@
 		<div id="content">	
 			
 			<div id="sideBarBtn">more info</div>
-			<h2>Please Enter A Physical Adress</h2>
 			
 			<center>
+				<h2>Please Enter A Physical Address</h2>
+		
 				<div id="map-canvas"></div>
 				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
+				
 				<div id="Dialog" title="Hazard Data">
-					<p>Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
-					<p>Tsunami Zone: <output id="tsunamiZone" type="text" placeholder="WithinEvacZone"></output></p>
-					<p>Lava Zone: <output id="lavaZone" type="text" placeholder="WithinEvacZone"></output></p>
+					
+					<ul id="HazArray">
+						<!--<li><p>Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
+							<ul>
+								<li>
+									<div id="coordData">
+										<h3>Description</h3>
+										<div>
+											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
+											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
+										</div>
+										
+										<h3>Mitigation</h3>
+										<div>
+											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
+											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
+										</div>
+										
+										<h3>Source</h3>
+										<div>
+											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
+											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li>-->
+						<li><p>Tsunami Zone: <output id="tsunamiZone" type="text" placeholder="WithinEvacZone"></output></p>
+							<ul>
+								<li>
+									<div id="tsunData">
+										<h3>Description</h3>
+										<div>
+											<p><output id="tsuDesc" type="text"></output></p>
+										</div>
+										
+										<h3>Mitigation</h3>
+										<div>
+											<p><output id="tsuMit" type="text"></output></p>
+										</div>
+										
+										<h3>Source</h3>
+										<div>
+											<p><output id="tsuSrc" type="text"></output></p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li><p>Lava Zone: <output id="lavaZone" type="text" placeholder="WithinEvacZone"></output></p>
+							<ul>
+								<li>
+									<div id="lavaData">
+										<h3>Description</h3>
+										<div>
+											<p><output id="lavaDes" type="text"></output></p>
+										</div>
+										
+										<h3>Mitigation</h3>
+										<div>
+											<p><output id="lavaMit" type="text"></output></p>
+										</div>
+										
+										<h3>Source</h3>
+										<div>
+											<p><output id="lavaSrc" type="text"></output></p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
 				</div>
 				<p id="message"></p>
 			</center>
@@ -57,7 +130,8 @@
 	</div>
 		
 	<div id="footer">
-		<p>IDK</p>
+		<center>
+			<h3>Natural Disasters</h3>
 	</div>
 	<script>
 		$(document).ready(function(){
@@ -75,6 +149,101 @@
 				$("#content").css("width", "85%");
 				$("#sidebar").show();
 			});
+			
+			$(function(){
+				$("#HazArray").menu();
+			});
+			
+			/*$(function(){
+				$("#coordData").accordion();
+			});
+			
+			$(function(){
+				$("#coordMit").accordion();
+			});
+			
+			$(function(){
+				$("#coordSrc").accordion();
+			});*/
+			
+			$(function(){
+				$("#tsunData").accordion({
+					heightStyle: "content",
+					event: "click hoverintent"
+				});
+			});
+			
+			$(function(){
+				$("#lavaData").accordion({
+					heightStyle: "content",
+					event: "click hoverintent"
+				});
+			});
+			
+			$.event.special.hoverintent = {
+				setup: function() {
+					$( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
+				},
+				teardown: function() {
+					$( this ).unbind( "mouseover", jQuery.event.special.hoverintent.handler );
+				},
+				
+				handler: function( event ) {
+					var currentX, currentY, timeout,
+					args = arguments,
+					target = $( event.target ),
+					previousX = event.pageX,
+					previousY = event.pageY;
+			 
+					function track( event ) {
+						currentX = event.pageX;
+						currentY = event.pageY;
+					};
+			 
+					function clear() {
+						target
+						.unbind( "mousemove", track )
+						.unbind( "mouseout", clear );
+						clearTimeout( timeout );
+					}
+			 
+					function handler() {
+						var prop,
+						orig = event;
+			 
+					if ( ( Math.abs( previousX - currentX ) +
+						Math.abs( previousY - currentY ) ) < 7 ) {
+							clear();
+			 
+							event = $.Event( "hoverintent" );
+							for ( prop in orig ) {
+									if ( !( prop in event ) ) {
+									event[ prop ] = orig[ prop ];
+								}
+							}
+							
+							// Prevent accessing the original event since the new event
+							// is fired asynchronously and the old event is no longer
+							// usable (#6028)
+							delete event.originalEvent;
+				 
+							target.trigger( event );
+						} else {
+							previousX = currentX;
+							previousY = currentY;
+							timeout = setTimeout( handler, 100 );
+						}
+					}	
+			 
+					timeout = setTimeout( handler, 100 );
+					target.bind({
+						mousemove: track,
+						mouseout: clear
+					});
+				}
+			}
+			
+			$("#HazArray").hide();
 		});
 		
 		//Shows current location
@@ -130,7 +299,7 @@
 
 				// For each place, get the icon, place name, and location, output location
 				markers = [];
-				var txtOutput = document.getElementById("txtOutput");
+				//var txtOutput = document.getElementById("txtOutput");
 				var bounds = new google.maps.LatLngBounds();
 				for (var i = 0, place; place = places[i]; i++) {
 					var image = {
@@ -156,7 +325,7 @@
 				
 				//Displays Coordinates (lat, long)
 				var grabLoc = marker.position;
-				txtOutput.value = grabLoc;
+				//txtOutput.value = grabLoc;
 				
 				//Kml Parser that enables to render kml polygons as Google map api objects
 				var geoXml = new geoXML3.parser({
@@ -166,7 +335,7 @@
 				});
 	
 				//Allows to parse files and render them from local files
-				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml']);
+				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
 				
 				//allows objects to be manipulated after parse renders objects
 				function useTheData(doc) {
@@ -174,7 +343,9 @@
 					//Number of polygons within Kml file
 					var numPolys = doc[0].gpolygons.length;
 					var numPolys2 = doc[1].gpolygons.length;
+					var numPolys3 = doc[2].gpolygons.length;					
 					
+					console.log(numPolys3);
 					
 					// Loop through each polygon
 					for(var i = 0; i < numPolys; i++){
@@ -187,11 +358,18 @@
 						doc[1].gpolygons[i].setMap(null);
 					};
 					
+					for(var i = 0; i < numPolys3; i++){
+						//hide all the polygons within kml file
+						doc[2].gpolygons[i].setMap(null);
+					};
+					
 					//Single out a certain polygon for visualization
 					//doc[0].gpolygons[6].setMap(map);
 					
 					//Function contains "Contains" from v3_epoly.js file
 					//Determines if a function is within a certain polygon
+					
+					//Tsunami Zones
 					if(doc[0].gpolygons[0].Contains(grabLoc)){
 						tsunamiZone.value = '1';
 					}else if(doc[0].gpolygons[1].Contains(grabLoc)){
@@ -228,50 +406,112 @@
 						tsunamiZone.value = '0';
 					}
 					
-					if(doc[1].gpolygons[0].Contains(grabLoc)){
+					//Lava Flow Zones
+					/*for(var i = 0; i < numPolys2; i++){
+						if(doc[1].gpolygons[i].Contains(grabLoc)){
+							lavaZone.value = doc[1].placemarks[i].name;
+							break;
+						} else {
+							lavaZone.value = '0';
+							break;
+						}
+					}*/
+					
+					//Lava Zone descriptions from 1-9.
+					var lavaZoneDes = [
+						'Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
+						'Areas adjacent to and downslope of active rift zones.',
+						'Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
+						'Includes all of Hualalai, where the frequency of eruptions is lower than on Kilauea and Mauna Loa. Flows typically cover large areas.',
+						'Areas currently protected from lava flows by the topography of the volcano.',
+						'Areas currently protected from lava flows by the topography of the volcano.',
+						'20 percent of this area covered by lava in the last 10,000 yrs.',
+						'Only a few percent of this area covered in the past 10,000 yrs.',
+						'No eruption in this area for the past 60,000 yrs.'
+					]
+					
+					//
+					if(doc[1].gpolygons[0].Contains(grabLoc)){		
+						//zone 9
 						lavaZone.value = doc[1].placemarks[0].name;
+						lavaDes.value = lavaZoneDes[8];
 					}else if(doc[1].gpolygons[1].Contains(grabLoc)){
+						//zone 8
 						lavaZone.value = doc[1].placemarks[1].name;
+						lavaDes.value = lavaZoneDes[7];
 					}else if(doc[1].gpolygons[2].Contains(grabLoc)){
+						//zone 3
 						lavaZone.value = doc[1].placemarks[2].name;
+						lavaDes.value = lavaZoneDes[2];
 					}else if(doc[1].gpolygons[3].Contains(grabLoc)){
+						//zone 7
 						lavaZone.value = doc[1].placemarks[3].name;
+						lavaDes.value = lavaZoneDes[6];
 					}else if(doc[1].gpolygons[4].Contains(grabLoc)){
+						//zone 4
 						lavaZone.value = doc[1].placemarks[4].name;
+						lavaDes.value = lavaZoneDes[3];
 					}else if(doc[1].gpolygons[5].Contains(grabLoc)){
+						//zone 2
 						lavaZone.value = doc[1].placemarks[5].name;
+						lavaDes.value = lavaZoneDes[1];
 					}else if(doc[1].gpolygons[6].Contains(grabLoc)){
+						//zone 3
 						lavaZone.value = doc[1].placemarks[6].name;
+						lavaDes.value = lavaZoneDes[2];
 					}else if(doc[1].gpolygons[7].Contains(grabLoc)){
+						//zone 2
 						lavaZone.value = doc[1].placemarks[7].name;
+						lavaDes.value = lavaZoneDes[1];
 					}else if(doc[1].gpolygons[8].Contains(grabLoc)){
+						//zone 1
 						lavaZone.value = doc[1].placemarks[8].name;
+						lavaDes.value = lavaZoneDes[0];
 					}else if(doc[1].gpolygons[9].Contains(grabLoc)){
+						//zone 1 
 						lavaZone.value = doc[1].placemarks[9].name;
+						lavaDes.value = lavaZoneDes[0];
 					}else if(doc[1].gpolygons[10].Contains(grabLoc)){
+						//zone 2 
 						lavaZone.value = doc[1].placemarks[10].name;
+						lavaDes.value = lavaZoneDes[1];
 					}else if(doc[1].gpolygons[11].Contains(grabLoc)){
+						//zone 6
 						lavaZone.value = doc[1].placemarks[11].name;
+						lavaDes.value = lavaZoneDes[5];
 					}else if(doc[1].gpolygons[12].Contains(grabLoc)){
+						//zone 2
 						lavaZone.value = doc[1].placemarks[12].name;
+						lavaDes.value = lavaZoneDes[1];
 					}else if(doc[1].gpolygons[13].Contains(grabLoc)){
+						//zone 3
 						lavaZone.value = doc[1].placemarks[13].name;
+						lavaDes.value = lavaZoneDes[2];
 					}else if(doc[1].gpolygons[14].Contains(grabLoc)){
+						//zone 5
 						lavaZone.value = doc[1].placemarks[14].name;
+						lavaDes.value = lavaZoneDes[4];
 					}else if(doc[1].gpolygons[15].Contains(grabLoc)){
+						//zone 6
 						lavaZone.value = doc[1].placemarks[15].name;
+						lavaDes.value = lavaZoneDes[5];
 					}else {
 						lavaZone.value = '0';
 					}
+					
+					
+					
+					$("#HazArray").show();
 					
 					//Dialog box 
 					$(function() {
 						$( "#Dialog" ).dialog({
 							//autoOpen: false,
-							modal: true,
-							width: 500
+							modal: false,
+							width: 500,
+							height: 400
 						});
-					  });
+					});
 					
 					<!--evacuation zone polygon-->
 					/*var zoneCoords1 = [
@@ -313,13 +553,14 @@
 			});
 
 			//Allows to parse files and render them from local files
-			geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml']);
+			geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
 			
 			//This function will display any of the kml polygons, 
 			//depending on which type of hazard the user chooses.
 			function displayKml(doc){
 				var numberOfPolys = doc[0].gpolygons.length;
 				var numberOfPolys2 = doc[1].gpolygons.length;
+				var numberOfPolys3 = doc[2].gpolygons.length;
 				var value = null;
 				
 				//console.log(numberOfPolys2);
@@ -335,12 +576,19 @@
 					doc[1].gpolygons[i].setMap(null);
 				}
 				
+				for(var i = 0; i < numberOfPolys3; i++){
+					doc[2].gpolygons[i].setMap(null);
+				}
+				
 				$("#tsunami").click(function(){
 					for(var i = 0; i < numberOfPolys; i++){
 						doc[0].gpolygons[i].setMap(map);
 					}
 					for(var i = 0; i < numberOfPolys2; i++){
 						doc[1].gpolygons[i].setMap(null);
+					}
+					for(var i = 0; i < numberOfPolys3; i++){
+						doc[2].gpolygons[i].setMap(null);
 					}
 				});	
 				
@@ -351,6 +599,9 @@
 					for(var i = 0; i < numberOfPolys2; i++){
 						doc[1].gpolygons[i].setMap(null);
 					}
+					for(var i = 0; i < numberOfPolys3; i++){
+						doc[2].gpolygons[i].setMap(map);
+					}
 				});
 				
 				$("#lavaflow").click(function(){
@@ -359,6 +610,21 @@
 					}
 					for(var i = 0; i < numberOfPolys2; i++){
 						doc[1].gpolygons[i].setMap(map);
+					}
+					for(var i = 0; i < numberOfPolys3; i++){
+						doc[2].gpolygons[i].setMap(null);
+					}
+				});
+				
+				$("#vog").click(function(){
+					for(var i = 0; i < numberOfPolys; i++){
+						doc[0].gpolygons[i].setMap(null);
+					}
+					for(var i = 0; i < numberOfPolys2; i++){
+						doc[1].gpolygons[i].setMap(null);
+					}
+					for(var i = 0; i < numberOfPolys3; i++){
+						doc[2].gpolygons[i].setMap(null);
 					}
 				});
 			}
