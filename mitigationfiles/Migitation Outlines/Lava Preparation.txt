@@ -1,0 +1,81 @@
+Info to help them make a decision
+
+-1 Greater than 25% of area covered by lava since 1800. 
+ -Description
+  -Area includes summits and rift zones of Kilauea and Mauna Loa volcanoes where vents repeatedly active
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-2 15-25% of area covered by lava since 1800.
+ -Description
+  -Areas adjacent to and downlope of active rift zones.
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-3 1-5% covered by lava since 1800. 15-75% in last 750 years
+ -Description
+  -Less hazardous than zone 2 in small steps because located at greater distance from recently active vents
+  -Less hazardous than zone 2 because arangement of natural and artificial features makes less likely that flows will cover these areas
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-4 About 5% of area covered by lava since 1800
+ -Description
+  -Area includes all of hualalai which erupts less than Kilauea and Mauna Loa
+  -?"Flows typically cover large areas"?
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-5 0 % of area covered by lava since 1800
+ -Description
+  -Close to zone 1 but protected from flows by the topography of the volcano
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-6 0% of area covered by lava since 1800
+ -Description
+  -Same as zone 5
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-7 0% of area covered by lava since 1800
+ -Description
+  -20 percent of this area covered by lava in last 10000 years
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-8 0% of area covered by lava since 1800
+ -Description
+  -Only a few percent of this area covered by lava in last 10000 years
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+-9 0% of area covered by lava since 1800
+ -Description
+  -No eruption in this area for the past 60000 years
+ -Safety Preparation
+ -House/Land/Property Preparation
+ -Supplies
+ -Websites
+
+
+?750 years is important because averaged over more years?
+-Chose since 1800 because most people wont' be here for over 100 years.
+-Maybe list the places hit by eruptions in last 100 years
+-Lines separating zones are not thin enough. Try a location on a line separating zones.
+-Slow in starting and slow in outputting the haz array
+-When position outside of big island then it just outputs the last haz array values
+-Theres two jqueries going on at the same time?
+-Maybe put the files on the server for mitigation then upload because if all in html file then it will be slow. It's already slowing down.
+-Need to figure out how get new line in the haz array
+-Figure out how to account for if not in any polygon and output message "Not in any zone"
+-Add general things to consider on web
+-Put that disclaimer at the bottom of the page
