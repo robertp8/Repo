@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="js/v3_epoly.js"></script>
 </head>
 
-<!--<body onload="getLocation()">-->
+<!--onload execute initialize function in javascript-->
 <body>
 
 	<div id="masthead">
@@ -29,12 +29,15 @@
 			
 			<div id="closeSidebar">X</div>
 				<ul>
-					<li>Hazards</li>
+					<li>Hazard Layers: Click Layers For Description</li>
 					<ul>
 						<li><input type="radio" name="hazard" value="Tsunami" id="tsunami">Tsunami</input></li>
 						<li><input type="radio" name="hazard" value="LavaFlow" id="lavaflow">Lava Flow</input></li>
 						<li><input type="radio" name="hazard" value="Hurricane" id="hurricane">Hurricane</input></li>
 						<li><input type="radio" name="hazard" value="Vog" id="vog">Vog</input></li>
+						<li><input type="radio" name="hazard" value="Flooding" id="flooding">Flooding</input></li>
+						<li><input type="radio" name="hazard" value="Storm Surge" id="storm Surge">Storm Surge</input></li>
+						<li><input type="radio" name="hazard" value="Earthquake" id="earthquake">Earthquake</input></li>
 					</ul>
 				</ul>
 				<!--<input type="button" value="View Map" id="select">-->
@@ -42,42 +45,17 @@
 
 		<div id="content">	
 			
-			<div id="sideBarBtn">more info</div>
+			<div id="sideBarBtn">Click To View Hazard Layers</div>
 			
 			<center>
-				<h2>Please Enter A Physical Address</h2>
+				<h2>Please Enter A Physical Address Or Location</h2>
 		
-				<div id="map-canvas"></div>
-				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
+				<div id="map-canvas"></div> <!--google map-->
+				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input> <!--location input-->
 				
+				<!--hazard array-->
 				<div id="Dialog" title="Hazard Data">
-					
 					<ul id="HazArray">
-						<!--<li><p>Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
-							<ul>
-								<li>
-									<div id="coordData">
-										<h3>Description</h3>
-										<div>
-											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
-											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
-										</div>
-										
-										<h3>Mitigation</h3>
-										<div>
-											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
-											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
-										</div>
-										
-										<h3>Source</h3>
-										<div>
-											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
-											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li>-->
 						<li><p>Tsunami Zone: <output id="tsunamiZone" type="text" placeholder="WithinEvacZone"></output></p>
 							<ul>
 								<li>
@@ -153,11 +131,13 @@
 		
 	<div id="footer">
 		<center>
-			<h3>Natural Disasters</h3>
+			<h3>Disclaimer: Last Reliable Update dd-mm-2014</h3>
 	</div>
 	<script>
+	    //jquery code
 		$(document).ready(function(){
-		
+		    
+			//side bar layer selection buttons etc
 			$("#sidebar").hide();
 			
 			$("#closeSidebar").click(function(){
@@ -188,6 +168,7 @@
 				$("#coordSrc").accordion();
 			});*/
 			
+			//hazard array hover style
 			$(function(){
 				$("#tsunData").accordion({
 					heightStyle: "content",
@@ -287,6 +268,7 @@
 			}
 		}*/
 
+		//google maps api functions, geoxml parsing, &
 		function initialize(){
 			var markers = [];
 			//Lat/Long for Hawaii coordinates
@@ -303,8 +285,6 @@
 			};
 		
 			var map = new google.maps.Map(document.getElementById('map-canvas'), mapProp);
-			
-			
 			
 			//Search bar and coordinates
 			var input = /** @type {HTMLInputElement} */(document.getElementById('pac-input'));
@@ -364,7 +344,7 @@
 				});
 	
 				//Allows to parse files and render them from local files
-				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
+				geoXml.parse(['datafiles/tsunami_evac_zones_test_result.kml', 'datafiles/doc.kml', 'datafiles/BigIslandBoundary.kml']);
 				
 				//allows objects to be manipulated after parse renders objects
 				function useTheData(doc) {
@@ -372,7 +352,7 @@
 					//Number of polygons within Kml file
 					var numPolys = doc[0].gpolygons.length;
 					var numPolys2 = doc[1].gpolygons.length;
-					var numPolys3 = doc[2].gpolygons.length;					
+					var numPolys3 = doc[2].gpolygons.length;
 					
 					console.log(numPolys3);
 					
@@ -392,112 +372,110 @@
 						doc[2].gpolygons[i].setMap(null);
 					};
 					
+					
 					//Single out a certain polygon for visualization
 					//doc[0].gpolygons[6].setMap(map);
 					
 					//Function contains "Contains" from v3_epoly.js file
 					//Determines if a function is within a certain polygon
 					
-					//Tsunami Zone Descriptions
-					var TsunamiZoneDes = [
-						'0-You are likely safe. Upon arrival a tsunami will most likely not hit this location. Some belongings might be swept away. ',
-						'1 - Upon arrival a tsunami will most likely hit this area. The tsunami danger period can continue for many hours as the waters move onto land, recede, and return. For children: Even 6 inches of water can sweep you off your feet. Property can be swept away.'
-					]
-					
-					var TsunamiZoneMit = [ 
-					
-					]
-					
-					var TsunamiZoneSrc = [ 
-					]
 					
 					//Tsunami Zones
-					if(doc[0].gpolygons[0].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[1].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[2].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[3].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[4].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[5].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[6].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[7].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[8].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[9].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[10].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[11].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[12].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[13].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[14].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else if(doc[0].gpolygons[15].Contains(grabLoc)){
-						tsunamiZone.value = '1';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
-					}else{
-						tsunamiZone.value = '0';
-						$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription0.txt" );});
-						$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation0.txt" );});
-						$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources0.txt" );});
+					//first check if within Big Island
+					if(doc[2].gpolygons[0].Contains(grabLoc)){ 
+						if(doc[0].gpolygons[0].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[1].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[2].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[3].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[4].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[5].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[6].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[7].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[8].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[9].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[10].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[11].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[12].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[13].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[14].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else if(doc[0].gpolygons[15].Contains(grabLoc)){
+							tsunamiZone.value = '1';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+						}else{
+							tsunamiZone.value = '0';
+							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription0.txt" );});
+							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation0.txt" );});
+							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources0.txt" );});
+						}
+					}else{ //if not within Big Island
+						tsunamiZone.value = "Outside Big Island";
+						tsuDesc.value = "Outside Big Island";
+						tsuMit.value = "Outside Big Island";
+						tsuSrc.value = "Otuside Big Island";
 					}
+					
 					
 					//Lava Flow Zones
 					/*for(var i = 0; i < numPolys2; i++){
@@ -512,16 +490,47 @@
 					
 					//Lava Zone descriptions from 1-9.
 					var lavaZoneDes = [
-						'Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
-						'Areas adjacent to and downslope of active rift zones.',
-						'Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
-						'Includes all of Hualalai, where the frequency of eruptions is lower than on Kilauea and Mauna Loa. Flows typically cover large areas.',
-						'Areas currently protected from lava flows by the topography of the volcano.',
-						'Areas currently protected from lava flows by the topography of the volcano.',
-						'20 percent of this area covered by lava in the last 10,000 yrs.',
-						'Only a few percent of this area covered in the past 10,000 yrs.',
-						'No eruption in this area for the past 60,000 yrs.',
-						'Outside of the Big Island'
+						'1 - Greater than 25% of area covered by lava since 1800. Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
+						'2 - 15-25% of area covered by lava since 1800. Areas adjacent to and downslope of active rift zones.',
+						'3 - 1-5% covered by lava since 1800. Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
+						'4 - About 5% of area covered by lava since 1800. Includes all of Hualalai, where the frequency of eruptions is lower than on Kilauea and Mauna Loa. Flows typically cover large areas.',
+						'5 - 0 % of area covered by lava since 1800. Areas currently protected from lava flows by the topography of the volcano.',
+						'6 - 0% of area covered by lava since 1800. Areas currently protected from lava flows by the topography of the volcano.',
+						'7 - 0% of area covered by lava since 1800. 20 percent of this area covered by lava in the last 10,000 yrs.',
+						'8 - 0% of area covered by lava since 1800. Only a few percent of this area covered in the past 10,000 yrs.',
+						'9 - 0% of area covered by lava since 1800. No eruption in this area for the past 60,000 yrs.',
+						'Outside Big Island'
+					]
+					
+					//Lava Zone mitigations from 1-9.
+					var lavaZoneMit = 
+					[
+						'Particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher. If in direct path of lava, unfortunately currently nothing can protect home from lava.',
+                        'Particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher. If in direct path of lava, unfortunately currently nothing can protect home from lava.',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed. If in direct path of lava, unfortunately currently nothing can protect your home from lava.',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed. If in direct path of lava, unfortunately currently nothing can protect your home from lava.',
+                        'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
+                        'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
+                        'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
+                        'Outside Big Island'						
+					]
+					
+					//Lava Zone Sources from 1-9
+					var lavaZoneSrc = 
+					[
+					    'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579', 
+						'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
+						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
+						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
+						'Outside Big Island'
+						
 					]
 					
 					var lavaZoneMit  = 	"If you are in the path of potential lava flows, pyroclastic flows, surges or lahars be aware of this fact and be prepared to evacuate when asked to by controlling authorities (i.e. police, civil defence). Take with you: Essential medicines, toilet items and baby needs, Important documents e.g. identification, insurance, photos, Transistor radio and torch, Extra clothing  Before leaving: Consider your pets and animals, Turn off water, electricity, gas and heating oil at the mains. Secure premises  When you reach safety Listen to your radio for further instructions, including registration requirements.  After an Eruption If you have been evacuated, return home only if you have been advised by Civil Defence that it is safe. Seek medical help or counselling if needed. Write a list of all damage as soon as possible.";
@@ -531,105 +540,192 @@
 						//zone 9
 						lavaZone.value = doc[1].placemarks[0].name;
 						lavaDes.value = lavaZoneDes[8];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[8];
+						lavaSrc.value = lavaZoneSrc[8];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[1].Contains(grabLoc)){
 						//zone 8
 						lavaZone.value = doc[1].placemarks[1].name;
 						lavaDes.value = lavaZoneDes[7];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[7];
+						lavaSrc.value = lavaZoneSrc[7];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[2].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[2].name;
 						lavaDes.value = lavaZoneDes[2];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[2];
+						lavaSrc.value = lavaZoneSrc[2];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[3].Contains(grabLoc)){
 						//zone 7
 						lavaZone.value = doc[1].placemarks[3].name;
 						lavaDes.value = lavaZoneDes[6];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[6];
+						lavaSrc.value = lavaZoneSrc[6];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[4].Contains(grabLoc)){
 						//zone 4
 						lavaZone.value = doc[1].placemarks[4].name;
 						lavaDes.value = lavaZoneDes[3];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[3];
+						lavaSrc.value = lavaZoneSrc[3];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[5].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[5].name;
 						lavaDes.value = lavaZoneDes[1];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[6].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[6].name;
 						lavaDes.value = lavaZoneDes[2];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[2];
+						lavaSrc.value = lavaZoneSrc[2];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[7].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[7].name;
 						lavaDes.value = lavaZoneDes[1];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[8].Contains(grabLoc)){
 						//zone 1
 						lavaZone.value = doc[1].placemarks[8].name;
 						lavaDes.value = lavaZoneDes[0];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[0];
+						lavaSrc.value = lavaZoneSrc[0];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[9].Contains(grabLoc)){
 						//zone 1 
 						lavaZone.value = doc[1].placemarks[9].name;
 						lavaDes.value = lavaZoneDes[0];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[0];
+						lavaSrc.value = lavaZoneSrc[0];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[10].Contains(grabLoc)){
 						//zone 2 
 						lavaZone.value = doc[1].placemarks[10].name;
 						lavaDes.value = lavaZoneDes[1];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[11].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[11].name;
 						lavaDes.value = lavaZoneDes[5];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[5];
+						lavaSrc.value = lavaZoneSrc[5];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[12].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[12].name;
 						lavaDes.value = lavaZoneDes[1];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[13].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[13].name;
 						lavaDes.value = lavaZoneDes[2];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[2];
+						lavaSrc.value = lavaZoneSrc[2];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[14].Contains(grabLoc)){
 						//zone 5
 						lavaZone.value = doc[1].placemarks[14].name;
 						lavaDes.value = lavaZoneDes[4];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[4];
+						lavaSrc.value = lavaZoneSrc[4];
+>>>>>>> origin/master
 					}else if(doc[1].gpolygons[15].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[15].name;
 						lavaDes.value = lavaZoneDes[5];
+<<<<<<< HEAD
 						lavaMit.value = lavaZoneMit;
+=======
+						lavaMit.value = lavaZoneMit[5];
+						lavaSrc.value = lavaZoneSrc[5];
+>>>>>>> origin/master
 					}else {
-						lavaZone.value = '0';
+						lavaZone.value = lavaZoneDes[9];
 						lavaDes.value = lavaZoneDes[9];
+<<<<<<< HEAD
 						lavaMit.value = 'Not located with in the Big Island';
+=======
+						lavaMit.value = lavaZoneMit[9];
+						lavaSrc.value = lavaZoneSrc[9];
+>>>>>>> origin/master
 					}
 					
-					//Hurricane Zones
-					var hurrOnBigIsle = 0; //0=location outside big island. 1=on big island
-					for(var i = 0; i < numPolys3; i++)
-					{
-						if(doc[2].gpolygons[i].Contains(grabLoc))
+					//Hurricane Zones-Use this when can place zone level values on each polygon
+					//first check if within Big Island
+					/*
+					if(doc[3].gpolygons[0].Contains(grabLoc)){
+						for(var i = 0; i < numPolys3; i++)
 						{
-							hurricaneZone.value = doc[2].placemarks[i].name;
-							onBigIsleHurr = 1;
-							break
-						}
-					}	
-					if(hurrOnBigIsle==0)  //point not on big island then value="Not on Big Island"
-					{
+							if(doc[2].gpolygons[i].Contains(grabLoc))
+							{
+								hurricaneZone.value = doc[2].placemarks[i].name;
+								break
+							}
+						}	
+					}else{  //if not within Big Island
 						hurricaneZone.value = "Outside Big Island";
+						hurrDes.value = "Outside Big Island";
+						hurrMit.value = "Outside Big Island";
+						hurrSrc.value = "Otuside Big Island";
 					}
-					
-					
+					*/
 					$("#HazArray").show();
 					
 					//Dialog box 
@@ -682,7 +778,7 @@
 			});
 
 			//Allows to parse files and render them from local files
-			geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
+			geoXml.parse(['datafiles/tsunami_evac_zones_test_result.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
 			
 			//This function will display any of the kml polygons, 
 			//depending on which type of hazard the user chooses.
