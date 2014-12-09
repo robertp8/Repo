@@ -29,12 +29,15 @@
 			
 			<div id="closeSidebar">X</div>
 				<ul>
-					<li>Hazard Layers</li>
+					<li>Hazard Layers: Click Layers For Description</li>
 					<ul>
 						<li><input type="radio" name="hazard" value="Tsunami" id="tsunami">Tsunami</input></li>
 						<li><input type="radio" name="hazard" value="LavaFlow" id="lavaflow">Lava Flow</input></li>
 						<li><input type="radio" name="hazard" value="Hurricane" id="hurricane">Hurricane</input></li>
 						<li><input type="radio" name="hazard" value="Vog" id="vog">Vog</input></li>
+						<li><input type="radio" name="hazard" value="Flooding" id="flooding">Flooding</input></li>
+						<li><input type="radio" name="hazard" value="Storm Surge" id="storm Surge">Storm Surge</input></li>
+						<li><input type="radio" name="hazard" value="Earthquake" id="earthquake">Earthquake</input></li>
 					</ul>
 				</ul>
 				<!--<input type="button" value="View Map" id="select">-->
@@ -47,37 +50,12 @@
 			<center>
 				<h2>Please Enter A Physical Address Or Location</h2>
 		
-				<div id="map-canvas"></div>
-				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input>
+				<div id="map-canvas"></div> <!--google map-->
+				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input> <!--location input-->
 				
+				<!--hazard array-->
 				<div id="Dialog" title="Hazard Data">
-					
 					<ul id="HazArray">
-						<!--<li><p>Coordinates: <output id="txtOutput" type="text" placeholder="Location"></output></p>
-							<ul>
-								<li>
-									<div id="coordData">
-										<h3>Description</h3>
-										<div>
-											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
-											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
-										</div>
-										
-										<h3>Mitigation</h3>
-										<div>
-											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
-											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
-										</div>
-										
-										<h3>Source</h3>
-										<div>
-											<p>Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...
-											Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...Blah, blah, blah...</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</li>-->
 						<li><p>Tsunami Zone: <output id="tsunamiZone" type="text" placeholder="WithinEvacZone"></output></p>
 							<ul>
 								<li>
@@ -508,46 +486,46 @@
 					
 					//Lava Zone descriptions from 1-9.
 					var lavaZoneDes = [
-						'Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
-						'Areas adjacent to and downslope of active rift zones.',
-						'Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
-						'Includes all of Hualalai, where the frequency of eruptions is lower than on Kilauea and Mauna Loa. Flows typically cover large areas.',
-						'Areas currently protected from lava flows by the topography of the volcano.',
-						'Areas currently protected from lava flows by the topography of the volcano.',
-						'20 percent of this area covered by lava in the last 10,000 yrs.',
-						'Only a few percent of this area covered in the past 10,000 yrs.',
-						'No eruption in this area for the past 60,000 yrs.',
+						'1 - Greater than 25% of area covered by lava since 1800. Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
+						'2 - 15-25% of area covered by lava since 1800. Areas adjacent to and downslope of active rift zones.',
+						'3 - 1-5% covered by lava since 1800. Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
+						'4 - About 5% of area covered by lava since 1800. Includes all of Hualalai, where the frequency of eruptions is lower than on Kilauea and Mauna Loa. Flows typically cover large areas.',
+						'5 - 0 % of area covered by lava since 1800. Areas currently protected from lava flows by the topography of the volcano.',
+						'6 - 0% of area covered by lava since 1800. Areas currently protected from lava flows by the topography of the volcano.',
+						'7 - 0% of area covered by lava since 1800. 20 percent of this area covered by lava in the last 10,000 yrs.',
+						'8 - 0% of area covered by lava since 1800. Only a few percent of this area covered in the past 10,000 yrs.',
+						'9 - 0% of area covered by lava since 1800. No eruption in this area for the past 60,000 yrs.',
 						'Outside Big Island'
 					]
 					
 					//Lava Zone mitigations from 1-9.
 					var lavaZoneMit = 
 					[
-						'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher.',
-                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher.',
-                        '3',
-                        '4',
-                        '5',
-                        '6',
-                        '7',
-                        '8',
-                        '9',
-                        'Outside Big Island',						
+						'Particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher. If in direct path of lava, unfortunately currently nothing can protect home from lava.',
+                        'Particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher. If in direct path of lava, unfortunately currently nothing can protect home from lava.',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed. If in direct path of lava, unfortunately currently nothing can protect your home from lava.',
+                        'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed. If in direct path of lava, unfortunately currently nothing can protect your home from lava.',
+                        'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
+                        'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
+                        'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
+                        'Outside Big Island'						
 					]
 					
 					//Lava Zone Sources from 1-9
 					var lavaZoneSrc = 
 					[
-					    'http://www.hawaiinewsnow.com/story/26572923/hpia-issues-moratorium-on-insurance-in-lava-zone',
-						'http://www.hawaiinewsnow.com/story/26572923/hpia-issues-moratorium-on-insurance-in-lava-zone',
-						'3',
-						'4',
-						'5',
-						'6',
-						'7',
-						'8',
-						'9',
-						'Outside Big Island',
+					    'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579', 
+						'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
+						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
+						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
+						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
+						'Outside Big Island'
 						
 					]
 					
@@ -557,86 +535,102 @@
 						lavaZone.value = doc[1].placemarks[0].name;
 						lavaDes.value = lavaZoneDes[8];
 						lavaMit.value = lavaZoneMit[8];
+						lavaSrc.value = lavaZoneSrc[8];
 					}else if(doc[1].gpolygons[1].Contains(grabLoc)){
 						//zone 8
 						lavaZone.value = doc[1].placemarks[1].name;
 						lavaDes.value = lavaZoneDes[7];
 						lavaMit.value = lavaZoneMit[7];
+						lavaSrc.value = lavaZoneSrc[7];
 					}else if(doc[1].gpolygons[2].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[2].name;
 						lavaDes.value = lavaZoneDes[2];
 						lavaMit.value = lavaZoneMit[2];
+						lavaSrc.value = lavaZoneSrc[2];
 					}else if(doc[1].gpolygons[3].Contains(grabLoc)){
 						//zone 7
 						lavaZone.value = doc[1].placemarks[3].name;
 						lavaDes.value = lavaZoneDes[6];
 						lavaMit.value = lavaZoneMit[6];
+						lavaSrc.value = lavaZoneSrc[6];
 					}else if(doc[1].gpolygons[4].Contains(grabLoc)){
 						//zone 4
 						lavaZone.value = doc[1].placemarks[4].name;
 						lavaDes.value = lavaZoneDes[3];
 						lavaMit.value = lavaZoneMit[3];
+						lavaSrc.value = lavaZoneSrc[3];
 					}else if(doc[1].gpolygons[5].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[5].name;
 						lavaDes.value = lavaZoneDes[1];
 						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[6].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[6].name;
 						lavaDes.value = lavaZoneDes[2];
 						lavaMit.value = lavaZoneMit[2];
+						lavaSrc.value = lavaZoneSrc[2];
 					}else if(doc[1].gpolygons[7].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[7].name;
 						lavaDes.value = lavaZoneDes[1];
 						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[8].Contains(grabLoc)){
 						//zone 1
 						lavaZone.value = doc[1].placemarks[8].name;
 						lavaDes.value = lavaZoneDes[0];
 						lavaMit.value = lavaZoneMit[0];
+						lavaSrc.value = lavaZoneSrc[0];
 					}else if(doc[1].gpolygons[9].Contains(grabLoc)){
 						//zone 1 
 						lavaZone.value = doc[1].placemarks[9].name;
 						lavaDes.value = lavaZoneDes[0];
 						lavaMit.value = lavaZoneMit[0];
+						lavaSrc.value = lavaZoneSrc[0];
 					}else if(doc[1].gpolygons[10].Contains(grabLoc)){
 						//zone 2 
 						lavaZone.value = doc[1].placemarks[10].name;
 						lavaDes.value = lavaZoneDes[1];
 						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[11].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[11].name;
 						lavaDes.value = lavaZoneDes[5];
 						lavaMit.value = lavaZoneMit[5];
+						lavaSrc.value = lavaZoneSrc[5];
 					}else if(doc[1].gpolygons[12].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[12].name;
 						lavaDes.value = lavaZoneDes[1];
 						lavaMit.value = lavaZoneMit[1];
+						lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[13].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[13].name;
 						lavaDes.value = lavaZoneDes[2];
 						lavaMit.value = lavaZoneMit[2];
+						lavaSrc.value = lavaZoneSrc[2];
 					}else if(doc[1].gpolygons[14].Contains(grabLoc)){
 						//zone 5
 						lavaZone.value = doc[1].placemarks[14].name;
 						lavaDes.value = lavaZoneDes[4];
 						lavaMit.value = lavaZoneMit[4];
+						lavaSrc.value = lavaZoneSrc[4];
 					}else if(doc[1].gpolygons[15].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[15].name;
 						lavaDes.value = lavaZoneDes[5];
 						lavaMit.value = lavaZoneMit[5];
+						lavaSrc.value = lavaZoneSrc[5];
 					}else {
 						lavaZone.value = lavaZoneDes[9];
 						lavaDes.value = lavaZoneDes[9];
-						lavaMit.value = lavaZoneDes[9];
-						lavaSrc.value = lavaZoneDes[9];
+						lavaMit.value = lavaZoneMit[9];
+						lavaSrc.value = lavaZoneSrc[9];
 					}
 					
 					//Hurricane Zones-Use this when can place zone level values on each polygon
