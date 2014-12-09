@@ -524,74 +524,93 @@
 						'Outside of the Big Island'
 					]
 					
+					var lavaZoneMit  = 	"If you are in the path of potential lava flows, pyroclastic flows, surges or lahars be aware of this fact and be prepared to evacuate when asked to by controlling authorities (i.e. police, civil defence). Take with you: Essential medicines, toilet items and baby needs, Important documents e.g. identification, insurance, photos, Transistor radio and torch, Extra clothing  Before leaving: Consider your pets and animals, Turn off water, electricity, gas and heating oil at the mains. Secure premises  When you reach safety Listen to your radio for further instructions, including registration requirements.  After an Eruption If you have been evacuated, return home only if you have been advised by Civil Defence that it is safe. Seek medical help or counselling if needed. Write a list of all damage as soon as possible.";
+
 					//Dialogue box with haz descriptions
 					if(doc[1].gpolygons[0].Contains(grabLoc)){		
 						//zone 9
 						lavaZone.value = doc[1].placemarks[0].name;
 						lavaDes.value = lavaZoneDes[8];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[1].Contains(grabLoc)){
 						//zone 8
 						lavaZone.value = doc[1].placemarks[1].name;
 						lavaDes.value = lavaZoneDes[7];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[2].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[2].name;
 						lavaDes.value = lavaZoneDes[2];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[3].Contains(grabLoc)){
 						//zone 7
 						lavaZone.value = doc[1].placemarks[3].name;
 						lavaDes.value = lavaZoneDes[6];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[4].Contains(grabLoc)){
 						//zone 4
 						lavaZone.value = doc[1].placemarks[4].name;
 						lavaDes.value = lavaZoneDes[3];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[5].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[5].name;
 						lavaDes.value = lavaZoneDes[1];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[6].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[6].name;
 						lavaDes.value = lavaZoneDes[2];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[7].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[7].name;
 						lavaDes.value = lavaZoneDes[1];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[8].Contains(grabLoc)){
 						//zone 1
 						lavaZone.value = doc[1].placemarks[8].name;
 						lavaDes.value = lavaZoneDes[0];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[9].Contains(grabLoc)){
 						//zone 1 
 						lavaZone.value = doc[1].placemarks[9].name;
 						lavaDes.value = lavaZoneDes[0];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[10].Contains(grabLoc)){
 						//zone 2 
 						lavaZone.value = doc[1].placemarks[10].name;
 						lavaDes.value = lavaZoneDes[1];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[11].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[11].name;
 						lavaDes.value = lavaZoneDes[5];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[12].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[12].name;
 						lavaDes.value = lavaZoneDes[1];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[13].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[13].name;
 						lavaDes.value = lavaZoneDes[2];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[14].Contains(grabLoc)){
 						//zone 5
 						lavaZone.value = doc[1].placemarks[14].name;
 						lavaDes.value = lavaZoneDes[4];
+						lavaMit.value = lavaZoneMit;
 					}else if(doc[1].gpolygons[15].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[15].name;
 						lavaDes.value = lavaZoneDes[5];
+						lavaMit.value = lavaZoneMit;
 					}else {
 						lavaZone.value = '0';
 						lavaDes.value = lavaZoneDes[9];
+						lavaMit.value = 'Not located with in the Big Island';
 					}
 					
 					//Hurricane Zones
