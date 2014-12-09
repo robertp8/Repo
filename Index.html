@@ -364,7 +364,7 @@
 				});
 	
 				//Allows to parse files and render them from local files
-				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwindTest2.kml']);
+				geoXml.parse(['datafiles/tsunami_evac_zones.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml']);
 				
 				//allows objects to be manipulated after parse renders objects
 				function useTheData(doc) {
@@ -397,6 +397,19 @@
 					
 					//Function contains "Contains" from v3_epoly.js file
 					//Determines if a function is within a certain polygon
+					
+					//Tsunami Zone Descriptions
+					var TsunamiZoneDes = [
+						'0-You are likely safe. Upon arrival a tsunami will most likely not hit this location. Some belongings might be swept away. ',
+						'1 - Upon arrival a tsunami will most likely hit this area. The tsunami danger period can continue for many hours as the waters move onto land, recede, and return. For children: Even 6 inches of water can sweep you off your feet. Property can be swept away.'
+					]
+					
+					var TsunamiZoneMit = [ 
+					
+					]
+					
+					var TsunamiZoneSrc = [ 
+					]
 					
 					//Tsunami Zones
 					if(doc[0].gpolygons[0].Contains(grabLoc)){

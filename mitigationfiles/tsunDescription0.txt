@@ -1,2 +1,1 @@
-*You are likely safe. Tsunami will most likely not hit this location.
-*?Is the property safe in this zone?
+0-You are likely safe. Upon arrival a tsunami will most likely not hit this location. Some belongings might be swept away. 
