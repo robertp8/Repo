@@ -362,7 +362,7 @@
 				});
 	
 				//Allows to parse files and render them from local files
-				geoXml.parse(['datafiles/tsunami_evac_zones_test_result.kml', 'datafiles/doc.kml', 'datafiles/hawaii_50mwind.kml', 'datafiles/BigIslandBoundary.kml']);
+				geoXml.parse(['datafiles/tsunami_evac_zones_test_result.kml', 'datafiles/doc.kml', 'datafiles/BigIslandBoundary.kml']);
 				
 				//allows objects to be manipulated after parse renders objects
 				function useTheData(doc) {
@@ -371,8 +371,6 @@
 					var numPolys = doc[0].gpolygons.length;
 					var numPolys2 = doc[1].gpolygons.length;
 					var numPolys3 = doc[2].gpolygons.length;
-					var numPolys4 = doc[3].gpolygons.length;
-					
 					
 					console.log(numPolys3);
 					
@@ -392,10 +390,6 @@
 						doc[2].gpolygons[i].setMap(null);
 					};
 					
-					for(var i = 0; i < numPolys4; i++){
-						//hide all the polygons within kml file
-						doc[3].gpolygons[i].setMap(null);
-					};
 					
 					//Single out a certain polygon for visualization
 					//doc[0].gpolygons[6].setMap(map);
@@ -406,7 +400,7 @@
 					
 					//Tsunami Zones
 					//first check if within Big Island
-					if(doc[3].gpolygons[0].Contains(grabLoc)){ 
+					if(doc[2].gpolygons[0].Contains(grabLoc)){ 
 						if(doc[0].gpolygons[0].Contains(grabLoc)){
 							tsunamiZone.value = '1';
 							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
@@ -645,8 +639,9 @@
 						lavaSrc.value = lavaZoneDes[9];
 					}
 					
-					//Hurricane Zones
+					//Hurricane Zones-Use this when can place zone level values on each polygon
 					//first check if within Big Island
+					/*
 					if(doc[3].gpolygons[0].Contains(grabLoc)){
 						for(var i = 0; i < numPolys3; i++)
 						{
@@ -662,7 +657,7 @@
 						hurrMit.value = "Outside Big Island";
 						hurrSrc.value = "Otuside Big Island";
 					}
-					
+					*/
 					$("#HazArray").show();
 					
 					//Dialog box 
