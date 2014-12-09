@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="js/v3_epoly.js"></script>
 </head>
 
-<!--<body onload="getLocation()">-->
+<!--onload execute initialize function in javascript-->
 <body>
 
 	<div id="masthead">
@@ -134,8 +134,10 @@
 			<h3>Disclaimer: Last Reliable Update dd-mm-2014</h3>
 	</div>
 	<script>
+	    //jquery code
 		$(document).ready(function(){
-		
+		    
+			//side bar layer selection buttons etc
 			$("#sidebar").hide();
 			
 			$("#closeSidebar").click(function(){
@@ -166,6 +168,7 @@
 				$("#coordSrc").accordion();
 			});*/
 			
+			//hazard array hover style
 			$(function(){
 				$("#tsunData").accordion({
 					heightStyle: "content",
@@ -265,6 +268,7 @@
 			}
 		}*/
 
+		//google maps api functions, geoxml parsing, &
 		function initialize(){
 			var markers = [];
 			//Lat/Long for Hawaii coordinates
