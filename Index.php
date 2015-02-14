@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php session_start();?>
 <!--Google maps idKey: AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk-->
 <html>
 <head>
@@ -70,12 +71,15 @@
 <!--onload execute initialize function in javascript-->
 <body>
 	<?php include('php/dbConnect.php');?>
+	
 	<div id="masthead">
 		<center>
 			<h1>Malama Natural Disaster Awareness</h1>
 				
 		</center>
+		<div id="login">Admin-Login</div>
 	</div>
+	
 	<div id="sidebarContent">
 		<div id="sidebar">
 			
@@ -93,8 +97,7 @@
 					</ul>
 				</ul>
 				<!--<input type="button" value="View Map" id="select">-->
-		</div>
-
+		</div>	
 		<div id="content">	
 			
 			<div id="sideBarBtn">Click To View Hazard Layers</div>
@@ -103,6 +106,31 @@
 				<h2>Please Enter A Physical Address Or Location</h2>
 		
 				<div id="map-canvas"></div> <!--google map-->
+				
+				<div id="loginForm">
+					<center>
+						<form action="php/login.php" method="post" id="login-form">
+							<fieldset>
+								<legend>Login</legend>
+								<p>Please enter your username and password.</p>
+								
+								<label for="username"> 
+									Username: <input type="text" name="username" id="username" />
+								</label>
+
+								<label for="password"> 
+									Password: <input type="password" name="password" id="password" />
+								</label>
+								<label for="submit">
+									<input type="submit" name="submit" id="submit"/>
+								</label>
+							</fieldset>		
+						</form>
+					</center>
+				</div>
+				
+				<div id="response"></div>
+				
 				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input> <!--location input-->
 				
 				<!--hazard array-->
@@ -180,9 +208,8 @@
 						
 					</div>
 				</form>
-				<p id="message"></p>
+				<input id="Print" type="button" onclick="PrintDiv();" value="Print a report" />
 			</center>
-			<input style="float: right;" type="button" onclick="PrintDiv();" value="Print a report" />
 		</div>
 	</div>
 		
@@ -193,9 +220,18 @@
 	<script>
 	    //jquery code
 		$(document).ready(function(){
-		    
+		
 			//side bar layer selection buttons etc
 			$("#sidebar").hide();
+			$("#loginForm").hide();
+			
+			$("#login").click(function(){
+				$(this).hide();
+				$("#Print").hide();
+				$("#map-canvas").hide();
+				$("#loginForm").show();
+				$("#sideBarBtn").hide();
+			});
 			
 			$("#PrintDialog").hide();
 			
@@ -313,6 +349,14 @@
 			}
 			
 			$("#HazArray").hide();
+			
+			$("#submit").click(function(){
+				$("#loginForm").hide();
+				//$("#Admin").show();
+				$("#Print").show();
+				$("#map-canvas").show();
+				//$("#logout").show();
+			});
 		});
 		
 		//Shows current location

@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<?php 
+	session_start();
+	require_once('php/functions.php'); 
+	if(check_login_status() == false) {
+
+	redirect('Index.php');
+}
+
+?>
 <!--Google maps idKey: AIzaSyBDeKh4FF-2J1pT6C82m6XlgdTDmd7AjGk-->
 <html>
 <head>
@@ -69,14 +78,29 @@
 </head>
 <!--onload execute initialize function in javascript-->
 <body>
+	
 	<?php include('php/dbConnect.php');?>
 	<div id="masthead">
 		<center>
 			<h1>Malama Natural Disaster Awareness</h1>
 				
 		</center>
+		<a id="logout" href="php/logout.php">logout</a>
+		<div id="Admin">Welcome <?php echo $_SESSION['username']; ?></div>
+		
 	</div>
+	
+		
 	<div id="sidebarContent">
+		<div id="AdminMenu">
+			<div id="closeAdminMenu">X</div>
+			
+			<p>View Data</p>
+			<p>Modify Data</p>
+			<p>Add Data</p>
+			<p>Delete Data</p>
+		
+		</div>
 		<div id="sidebar">
 			
 			<div id="closeSidebar">X</div>
@@ -94,15 +118,17 @@
 				</ul>
 				<!--<input type="button" value="View Map" id="select">-->
 		</div>
-
+	
 		<div id="content">	
 			
+			<div id="AdminBtn">Click To View Options</div>
 			<div id="sideBarBtn">Click To View Hazard Layers</div>
 			
 			<center>
 				<h2>Please Enter A Physical Address Or Location</h2>
 		
 				<div id="map-canvas"></div> <!--google map-->
+				
 				<input 	id="pac-input" class="controls" type="text" placeholder="Physical Address"></input> <!--location input-->
 				
 				<!--hazard array-->
@@ -180,9 +206,8 @@
 						
 					</div>
 				</form>
-				<p id="message"></p>
+				<input id="Print" type="button" onclick="PrintDiv();" value="Print a report" />
 			</center>
-			<input style="float: right;" type="button" onclick="PrintDiv();" value="Print a report" />
 		</div>
 	</div>
 		
@@ -193,9 +218,10 @@
 	<script>
 	    //jquery code
 		$(document).ready(function(){
-		    
+			
 			//side bar layer selection buttons etc
 			$("#sidebar").hide();
+			$("#AdminMenu").hide();
 			
 			$("#PrintDialog").hide();
 			
@@ -203,12 +229,29 @@
 				$("#sidebar").hide();
 				$("#content").css("width", "100%");
 				$("#sideBarBtn").show();
+				$("#AdminBtn").show();
+			});
+			
+			$("#closeAdminMenu").click(function(){
+				$("#sidebar").hide();
+				$("#content").css("width", "100%");
+				$("#sideBarBtn").show();
+				$("#AdminBtn").show();
+				$("#AdminMenu").hide();
 			});
 			
 			$("#sideBarBtn").click(function(){
 				$(this).hide();
 				$("#content").css("width", "85%");
 				$("#sidebar").show();
+				$("#AdminBtn").hide();
+			});
+			
+			$("#AdminBtn").click(function(){
+				$(this).hide();
+				$("#content").css("width", "88%");
+				$("#sideBarBtn").hide();
+				$("#AdminMenu").show();
 			});
 			
 			$(function(){
