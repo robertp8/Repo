@@ -24,6 +24,50 @@
 	<script type="text/javascript" src="js/v3_epoly.js"></script>
 	
 	<script type="text/javascript">
+		function showHazard(str) {
+			if (str == "") {
+				document.getElementById("hazTable").innerHTML = "";
+				return;
+			} else { 
+				if (window.XMLHttpRequest) {
+					// code for IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp = new XMLHttpRequest();
+				} else {
+					// code for IE6, IE5
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						document.getElementById("hazTable").innerHTML = xmlhttp.responseText;
+					}
+				}
+				xmlhttp.open("GET","php/viewHazards.php?q="+str,true);
+				xmlhttp.send();
+			}
+		}
+		
+		function modifyHazard(str) {
+			if (str == "") {
+				document.getElementById("updateHazTable").innerHTML = "";
+				return;
+			} else { 
+				if (window.XMLHttpRequest) {
+					// code for IE7+, Firefox, Chrome, Opera, Safari
+					xmlhttp = new XMLHttpRequest();
+				} else {
+					// code for IE6, IE5
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+						document.getElementById("updateHazTable").innerHTML = xmlhttp.responseText;
+					}
+				}
+				xmlhttp.open("GET","php/updateHazards.php?q="+str,true);
+				xmlhttp.send();
+			}
+		}
+	
         function PrintDiv() {
 			var tsunData1 = document.getElementById("tsuDesc").innerHTML;
 			var tsunData2 = document.getElementById("tsuMit").innerHTML;
@@ -95,8 +139,8 @@
 		<div id="AdminMenu">
 			<div id="closeAdminMenu">X</div>
 			
-			<p>View Data</p>
-			<p>Modify Data</p>
+			<div id="viewData">View Data</div>
+			<div id="modifyData">Modify Data</div>
 			<p>Add Data</p>
 			<p>Delete Data</p>
 		
@@ -206,6 +250,52 @@
 						
 					</div>
 				</form>
+				
+				<div id="viewForm">
+					<form method="get" action="">
+						<select name="hazName" onchange="showHazard(this.value)">
+							<?php 
+								echo "<option value=\"default\"> ....Select.....</option>";
+
+								$sql = mysqli_query($conn, "SELECT idHazard, hazName FROM hazard");
+								while ($row = mysqli_fetch_array($sql, MYSQL_ASSOC)){
+									
+									$id=$row["idHazard"];
+									$name=$row["hazName"]; 
+									
+									echo '<option value=' . $id . '">' . $name . '</option>';
+								}
+							?>
+						</select>
+					</form>
+					<br>
+					<div id="hazTable"></div>
+					<br>
+					<div id="back">back</div>
+				</div>
+				
+				<div id="modifyForm">
+					<form method="get" action="">
+						<select name="hazName" onchange="modifyHazard(this.value)">
+							<?php 
+								echo "<option value=\"default\"> ....Select.....</option>";
+
+								$sql = mysqli_query($conn, "SELECT idHazard, hazName FROM hazard");
+								while ($row = mysqli_fetch_array($sql, MYSQL_ASSOC)){
+									
+									$id=$row["idHazard"];
+									$name=$row["hazName"]; 
+									
+									echo '<option value=' . $id . '">' . $name . '</option>';
+								}
+							?>
+						</select>
+					</form>
+					<br>
+					<div id="updateHazTable"></div>
+					<br>
+					<div id="back1">back</div>
+				</div>
 				<input id="Print" type="button" onclick="PrintDiv();" value="Print a report" />
 			</center>
 		</div>
@@ -222,6 +312,8 @@
 			//side bar layer selection buttons etc
 			$("#sidebar").hide();
 			$("#AdminMenu").hide();
+			$("#viewForm").hide();
+			$("#modifyForm").hide();
 			
 			$("#PrintDialog").hide();
 			
@@ -252,6 +344,36 @@
 				$("#content").css("width", "88%");
 				$("#sideBarBtn").hide();
 				$("#AdminMenu").show();
+			});
+			
+			$("#viewData").click(function(){
+				$("#map-canvas").hide();
+				$("#Print").hide();
+				$("#modifyForm").hide();
+				$("#viewForm").show();
+			
+			});
+			
+			$("#modifyData").click(function(){
+				$("#map-canvas").hide();
+				$("#Print").hide();
+				$("#viewForm").hide();
+				$("#modifyForm").show();
+			
+			});
+			
+			$("#back").click(function(){
+				$("#map-canvas").show();
+				$("#Print").show();
+				$("#viewForm").hide();
+				
+			});
+			
+			$("#back1").click(function(){
+				$("#map-canvas").show();
+				$("#Print").show();
+				$("#modifyForm").hide();
+			
 			});
 			
 			$(function(){
