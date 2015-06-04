@@ -104,8 +104,10 @@
 			
 			<center>
 				<h2>Please Enter A Physical Address Or Location</h2>
-		
-				<div id="map-canvas"></div> <!--google map-->
+				
+				<div id="mapArea">
+					<div id="map-canvas"></div> <!--google map-->
+				</div>
 				
 				<div id="loginForm">
 					<center>
@@ -212,15 +214,39 @@
 			</center>
 		</div>
 	</div>
+	
+	<input type="hidden" id="hazIdent" name="hazIdent" value="">
+	<input type="hidden" id="hazValue" name="hazIdent" value="">
 		
 	<div id="footer">
 		<center>
 			<h3>Disclaimer: Last Reliable Update dd-mm-2014</h3>
+		</center>
 	</div>
-	<script>
+	
+	<script src="js/functions.js"></script>
+	<!--<script>
+		
 	    //jquery code
 		$(document).ready(function(){
 		
+			var c = $('#map-canvas');
+			var container = $(c).parent();
+
+			//Run function when browser resizes
+			$(window).resize( respondCanvas );
+
+			function respondCanvas(){ 
+				c.attr('width', $(container).width() ); //max width
+				c.attr('height', $(container).height() ); //max height
+
+				//Call a function to redraw other content (texts, images etc)
+			}
+
+			//Initial call 
+			respondCanvas();
+
+			
 			//side bar layer selection buttons etc
 			$("#sidebar").hide();
 			$("#loginForm").hide();
@@ -228,7 +254,7 @@
 			$("#login").click(function(){
 				$(this).hide();
 				$("#Print").hide();
-				$("#map-canvas").hide();
+				$("#mapArea").hide();
 				$("#loginForm").show();
 				$("#sideBarBtn").hide();
 			});
@@ -457,7 +483,7 @@
 					var numPolys2 = doc[1].gpolygons.length;
 					var numPolys3 = doc[2].gpolygons.length;
 					
-					console.log(numPolys3);
+					//console.log(numPolys3);
 					
 					// Loop through each polygon
 					for(var i = 0; i < numPolys; i++){
@@ -482,95 +508,826 @@
 					//Function contains "Contains" from v3_epoly.js file
 					//Determines if a function is within a certain polygon
 					
-					
 					//Tsunami Zones
 					//first check if within Big Island
 					if(doc[2].gpolygons[0].Contains(grabLoc)){ 
 						if(doc[0].gpolygons[0].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[1].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[2].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[3].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[4].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[5].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[6].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[7].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[8].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[9].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[10].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[11].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[12].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[13].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[14].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else if(doc[0].gpolygons[15].Contains(grabLoc)){
-							tsunamiZone.value = '1';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
+							tsunamiZone.value = 1;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('1');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription1.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation1.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources1.txt" );});
 						}else{
-							tsunamiZone.value = '0';
-							$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription0.txt" );});
-							$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation0.txt" );});
-							$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources0.txt" );});
+							tsunamiZone.value = 0;
+							
+							//zone 9
+							//lavaZone.value = doc[1].placemarks[0].name;
+							
+							var haz1 = 1;
+							//lavaZone.value = doc[1].placemarks[6].name;
+							
+							var tsunamiValue = tsunamiZone.value;
+							
+							$("#hazIdent").val('0');
+							$("#hazValue").val(zoneValue);
+							
+							var val = 'Hazard_idHazard='+ haz1 +'&hazVal='+ tsunamiZone.value;
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findDesc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuDesc.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findMit.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuMit.value = data;
+								}
+							});
+							
+							$.ajax({
+								method: "POST",
+								url: "php/findSrc.php",
+								data: val,
+								cache: false,
+								success : function(data) {
+									tsuSrc.value = data;
+								}
+							});
+							//$(function(){$( "#tsuDesc" ).load( "mitigationfiles/tsunDescription0.txt" );});
+							//$(function(){$( "#tsuMit" ).load( "mitigationfiles/tsunMitigation0.txt" );});
+							//$(function(){$( "#tsuSrc" ).load( "mitigationfiles/tsunSources0.txt" );});
 						}
 					}
 					/*else{ //if not within Big Island
@@ -593,7 +1350,7 @@
 					}*/
 					
 					//Lava Zone descriptions from 1-9.
-					var lavaZoneDes = [
+					/*var lavaZoneDes = [
 						'1 - Greater than 25% of area covered by lava since 1800. Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
 						'2 - 15-25% of area covered by lava since 1800. Areas adjacent to and downslope of active rift zones.',
 						'3 - 1-5% covered by lava since 1800. Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
@@ -636,110 +1393,765 @@
 						'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
 						'Outside Big Island'
 						
-					]
+					]*/
 					
 					//Dialogue box with haz descriptions
 					if(doc[1].gpolygons[0].Contains(grabLoc)){		
 						//zone 9
 						lavaZone.value = doc[1].placemarks[0].name;
-						lavaDes.value = lavaZoneDes[8];
-						lavaMit.value = lavaZoneMit[8];
-						lavaSrc.value = lavaZoneSrc[8];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[8];
+						//lavaMit.value = lavaZoneMit[8];
+						//lavaSrc.value = lavaZoneSrc[8];
 					}else if(doc[1].gpolygons[1].Contains(grabLoc)){
 						//zone 8
 						lavaZone.value = doc[1].placemarks[1].name;
-						lavaDes.value = lavaZoneDes[7];
-						lavaMit.value = lavaZoneMit[7];
-						lavaSrc.value = lavaZoneSrc[7];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[7];
+						//lavaMit.value = lavaZoneMit[7];
+						//lavaSrc.value = lavaZoneSrc[7];
 					}else if(doc[1].gpolygons[2].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[2].name;
-						lavaDes.value = lavaZoneDes[2];
-						lavaMit.value = lavaZoneMit[2];
-						lavaSrc.value = lavaZoneSrc[2];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[2];
+						//lavaMit.value = lavaZoneMit[2];
+						//lavaSrc.value = lavaZoneSrc[2];
 					}else if(doc[1].gpolygons[3].Contains(grabLoc)){
 						//zone 7
 						lavaZone.value = doc[1].placemarks[3].name;
-						lavaDes.value = lavaZoneDes[6];
-						lavaMit.value = lavaZoneMit[6];
-						lavaSrc.value = lavaZoneSrc[6];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[6];
+						//lavaMit.value = lavaZoneMit[6];
+						//lavaSrc.value = lavaZoneSrc[6];
 					}else if(doc[1].gpolygons[4].Contains(grabLoc)){
 						//zone 4
 						lavaZone.value = doc[1].placemarks[4].name;
-						lavaDes.value = lavaZoneDes[3];
-						lavaMit.value = lavaZoneMit[3];
-						lavaSrc.value = lavaZoneSrc[3];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[3];
+						//lavaMit.value = lavaZoneMit[3];
+						//lavaSrc.value = lavaZoneSrc[3];
 					}else if(doc[1].gpolygons[5].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[5].name;
-						lavaDes.value = lavaZoneDes[1];
-						lavaMit.value = lavaZoneMit[1];
-						lavaSrc.value = lavaZoneSrc[1];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+
+						//lavaDes.value = lavaZoneDes[1];
+						//lavaMit.value = lavaZoneMit[1];
+						//lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[6].Contains(grabLoc)){
 						//zone 3
+						var haz2 = 2;
 						lavaZone.value = doc[1].placemarks[6].name;
-						lavaDes.value = lavaZoneDes[2];
-						lavaMit.value = lavaZoneMit[2];
-						lavaSrc.value = lavaZoneSrc[2];
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+
+						//lavaDes.value = lavaZoneDes[2];
+						//lavaMit.value = lavaZoneMit[2];
+						//lavaSrc.value = lavaZoneSrc[2];
+					
 					}else if(doc[1].gpolygons[7].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[7].name;
-						lavaDes.value = lavaZoneDes[1];
-						lavaMit.value = lavaZoneMit[1];
-						lavaSrc.value = lavaZoneSrc[1];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[1];
+						//lavaMit.value = lavaZoneMit[1];
+						//lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[8].Contains(grabLoc)){
 						//zone 1
 						lavaZone.value = doc[1].placemarks[8].name;
-						lavaDes.value = lavaZoneDes[0];
-						lavaMit.value = lavaZoneMit[0];
-						lavaSrc.value = lavaZoneSrc[0];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[0];
+						//lavaMit.value = lavaZoneMit[0];
+						//lavaSrc.value = lavaZoneSrc[0];
 					}else if(doc[1].gpolygons[9].Contains(grabLoc)){
 						//zone 1 
 						lavaZone.value = doc[1].placemarks[9].name;
-						lavaDes.value = lavaZoneDes[0];
-						lavaMit.value = lavaZoneMit[0];
-						lavaSrc.value = lavaZoneSrc[0];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[0];
+						//lavaMit.value = lavaZoneMit[0];
+						//lavaSrc.value = lavaZoneSrc[0];
 					}else if(doc[1].gpolygons[10].Contains(grabLoc)){
 						//zone 2 
 						lavaZone.value = doc[1].placemarks[10].name;
-						lavaDes.value = lavaZoneDes[1];
-						lavaMit.value = lavaZoneMit[1];
-						lavaSrc.value = lavaZoneSrc[1];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[1];
+						//lavaMit.value = lavaZoneMit[1];
+						//lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[11].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[11].name;
-						lavaDes.value = lavaZoneDes[5];
-						lavaMit.value = lavaZoneMit[5];
-						lavaSrc.value = lavaZoneSrc[5];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[5];
+						//lavaMit.value = lavaZoneMit[5];
+						//lavaSrc.value = lavaZoneSrc[5];
 					}else if(doc[1].gpolygons[12].Contains(grabLoc)){
 						//zone 2
 						lavaZone.value = doc[1].placemarks[12].name;
-						lavaDes.value = lavaZoneDes[1];
-						lavaMit.value = lavaZoneMit[1];
-						lavaSrc.value = lavaZoneSrc[1];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});						
+						
+						//lavaDes.value = lavaZoneDes[1];
+						//lavaMit.value = lavaZoneMit[1];
+						//lavaSrc.value = lavaZoneSrc[1];
 					}else if(doc[1].gpolygons[13].Contains(grabLoc)){
 						//zone 3
 						lavaZone.value = doc[1].placemarks[13].name;
-						lavaDes.value = lavaZoneDes[2];
-						lavaMit.value = lavaZoneMit[2];
-						lavaSrc.value = lavaZoneSrc[2];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[2];
+						//lavaMit.value = lavaZoneMit[2];
+						//lavaSrc.value = lavaZoneSrc[2];
 					}else if(doc[1].gpolygons[14].Contains(grabLoc)){
 						//zone 5
 						lavaZone.value = doc[1].placemarks[14].name;
-						lavaDes.value = lavaZoneDes[4];
-						lavaMit.value = lavaZoneMit[4];
-						lavaSrc.value = lavaZoneSrc[4];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[4];
+						//lavaMit.value = lavaZoneMit[4];
+						//lavaSrc.value = lavaZoneSrc[4];
 					}else if(doc[1].gpolygons[15].Contains(grabLoc)){
 						//zone 6
 						lavaZone.value = doc[1].placemarks[15].name;
-						lavaDes.value = lavaZoneDes[5];
-						lavaMit.value = lavaZoneMit[5];
-						lavaSrc.value = lavaZoneSrc[5];
+						
+						var haz2 = 2;
+						//lavaZone.value = doc[1].placemarks[6].name;
+						
+						var zoneValue = lavaZone.value;
+						
+						$("#hazIdent").val('2');
+						$("#hazValue").val(zoneValue);
+						
+						var val = 'Hazard_idHazard='+ haz2 +'&hazVal='+ lavaZone.value;
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findDesc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaDes.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findMit.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaMit.value = data;
+							}
+						});
+						
+						$.ajax({
+							method: "POST",
+							url: "php/findSrc.php",
+							data: val,
+							cache: false,
+							success : function(data) {
+								lavaSrc.value = data;
+							}
+						});
+						
+						//lavaDes.value = lavaZoneDes[5];
+						//lavaMit.value = lavaZoneMit[5];
+						//lavaSrc.value = lavaZoneSrc[5];
 					}else {
 						lavaZone.value = ' ';
-						lavaDes.value = lavaZoneDes[9];
-						lavaMit.value = lavaZoneMit[9];
-						lavaSrc.value = lavaZoneSrc[9];
+						lavaDes.value = 'Outside of Big Island';
+						lavaMit.value = 'Outside of Big Island';
+						lavaSrc.value = 'Outside of Big Island';
 					}
 					
 					//Hurricane Zones-Use this when can place zone level values on each polygon
@@ -772,10 +2184,10 @@
 							width: 500,
 							height: 400
 						});
-					});
+					});-->
 					
 					<!--evacuation zone polygon-->
-					/*var zoneCoords1 = [
+					<!--/*var zoneCoords1 = [
 						//new google.maps.LatLng(doc[0].gpolygons[8].coords)
 						
 					];	
@@ -785,9 +2197,9 @@
 						paths: zoneCoords1
 					});
 		
-					hawaiiZone1.setMap(map);*/
+					hawaiiZone1.setMap(map);*/-->
 					<!--check if point is within the evacuation zone-->
-					/*var locOutput = document.getElementById("locOutput");
+					<!--/*var locOutput = document.getElementById("locOutput");
 					if (google.maps.geometry.poly.containsLocation(grabLoc, hawaiiZone1)){
 						locOutput.value = '1';
 					}else{
@@ -929,7 +2341,7 @@
 			
 		}
 		google.maps.event.addDomListener(window, 'load', initialize);
-	</script>
+	</script>-->
 	
 </body>
 </html>

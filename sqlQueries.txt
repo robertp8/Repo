@@ -1,0 +1,23 @@
+//Adds Admin ex:
+*****************************************************************************
+insert into admin(Fname, Lname, MI, Uname, password)
+values ("John", "Jacob", "J", "jjacob", "password");
+
+//Adds File ex:
+*****************************************************************************
+insert into file(fileName, Admin_idAdmin)
+values ("test.txt", 1);
+
+//Adds Hazard ex:
+*****************************************************************************
+insert into hazard(hazName, Admin_idAdmin)
+values ("Lava", 1);
+
+//Adds HazardZone ex:
+*****************************************************************************
+insert into hazardzone(hazVal, hazDesc, hazMit, hazSrc, Hazard_idHazard, Admin_idAdmin)
+values (1, "Lava flow is dangerous", "Run away", "www.help.com", 1, 1);
+
+//View any table:
+*****************************************************************************
+select * from hazardzone; //This specifically shows hazardzone table.
