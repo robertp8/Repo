@@ -1,7 +1,21 @@
+/*Author: Robert Peralta */
+
+/*
+This script will redefine google maps api within the canvas
+because of loading issues. Also this script will allow the 
+user to view the hazard data through for loops that loop through 
+each polygon within a KML file and access the database
+based on the location using ajax calls.
+*/
+
+//Icons within google maps
 var markers = [];
+
 //Lat/Long for Hawaii coordinates
 var lat = (19.542915); 
 var lon = (-155.665857);
+
+//Initial variable for identifying location
 var grabLoc = null;
 
 //Load map to Hawaii coordinates
@@ -82,7 +96,7 @@ google.maps.event.addListener(searchBox, 'places_changed', function() {
 	
 	//allows objects to be manipulated after parse renders objects
 	function useTheData(doc) {
-		// Geodata handling goes here, using JSON properties of the doc object
+		//Geodata handling goes here, using JSON properties of the doc object
 		//Number of polygons within Kml file
 		var numPolys = doc[0].gpolygons.length;
 		var numPolys2 = doc[1].gpolygons.length;
@@ -111,8 +125,9 @@ google.maps.event.addListener(searchBox, 'places_changed', function() {
 		
 		//Function contains "Contains" from v3_epoly.js file
 		//Determines if a function is within a certain polygon
+		//Will use for loop for outer custom geopolygon to see if out of big island
 		for(var i = 0; i <= numPolys; i++){
-		
+			
 			if(doc[2].gpolygons[0].Contains(grabLoc)){ 
 				if(i < numPolys){
 					if(doc[0].gpolygons[i].Contains(grabLoc)){
@@ -216,63 +231,6 @@ google.maps.event.addListener(searchBox, 'places_changed', function() {
 			}
 		};
 		
-		//Lava Flow Zones
-		/*for(var i = 0; i < numPolys2; i++){
-			if(doc[1].gpolygons[i].Contains(grabLoc)){
-				lavaZone.value = doc[1].placemarks[i].name;
-				break;
-			} else {
-				lavaZone.value = '0';
-				break;
-			}
-		}*/
-		
-		//Lava Zone descriptions from 1-9.
-		/*var lavaZoneDes = [
-			'1 - Greater than 25% of area covered by lava since 1800. Includes the summits and rift zones of Kilauea and Mauna Loa where vents have been repeatedly active in historic time.',
-			'2 - 15-25% of area covered by lava since 1800. Areas adjacent to and downslope of active rift zones.',
-			'3 - 1-5% covered by lava since 1800. Areas gradationally less hazardous than Zone 2 because of greater distance from recently active vents and/or because the topography makes it less likely that flows will cover these areas.',
-			'4 - About 5% of area covered by lava since 1800. Includes all of Hualalai, where the frequency of eruptions is lower than on Kilauea and Mauna Loa. Flows typically cover large areas.',
-			'5 - 0 % of area covered by lava since 1800. Areas currently protected from lava flows by the topography of the volcano.',
-			'6 - 0% of area covered by lava since 1800. Areas currently protected from lava flows by the topography of the volcano.',
-			'7 - 0% of area covered by lava since 1800. 20 percent of this area covered by lava in the last 10,000 yrs.',
-			'8 - 0% of area covered by lava since 1800. Only a few percent of this area covered in the past 10,000 yrs.',
-			'9 - 0% of area covered by lava since 1800. No eruption in this area for the past 60,000 yrs.',
-			'Outside Big Island'
-		]
-		
-		//Lava Zone mitigations from 1-9.
-		var lavaZoneMit = 
-		[
-			'Particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher. If in direct path of lava, unfortunately currently nothing can protect home from lava.',
-			'Particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes. Difficult to get loan for a home here. Hawaii Property Insurance Associatioon temporarily stopped issuing insurance polices here. Go through lloyds of london, but insurance premiums higher. If in direct path of lava, unfortunately currently nothing can protect home from lava.',
-			'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed',
-			'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed',
-			'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed. If in direct path of lava, unfortunately currently nothing can protect your home from lava.',
-			'Buy a particulate filter or respirator, dust masks, and/or goggles. Sturdy shoes may help as well. Stay indoors for ashfall with windows and doors closed. If in direct path of lava, unfortunately currently nothing can protect your home from lava.',
-			'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
-			'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
-			'Property and health most likely safe from lava in this location. Possibly buy face mask respirator',
-			'Outside Big Island'						
-
-		]
-		
-		//Lava Zone Sources from 1-9
-		var lavaZoneSrc = 
-		[
-			'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
-			'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
-			'http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
-			'http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579', 
-			'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
-			'http://www.lloyds.com/ http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568 http://www.homedepot.com/p/Sundstrom-Safety-P100-Particulate-Filter-SR-510/202714579',
-			'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
-			'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
-			'http://www.homedepot.com/p/Sundstrom-Safety-Silicone-Half-Mask-Respirator-SR-100-M-L/202714568',
-			'Outside Big Island'
-			
-		]*/
-		
 		for(var i = 0; i <= numPolys2; i++){
 		
 			if(i < numPolys2){
@@ -329,26 +287,6 @@ google.maps.event.addListener(searchBox, 'places_changed', function() {
 			}
 		};
 		
-		//Hurricane Zones-Use this when can place zone level values on each polygon
-		//first check if within Big Island
-		/*
-		if(doc[3].gpolygons[0].Contains(grabLoc)){
-			for(var i = 0; i < numPolys3; i++)
-			{
-				if(doc[2].gpolygons[i].Contains(grabLoc))
-				{
-					hurricaneZone.value = doc[2].placemarks[i].name;
-					break
-				}
-			}	
-		}else{  //if not within Big Island
-			hurricaneZone.value = "Outside Big Island";
-			hurrDes.value = "Outside Big Island";
-			hurrMit.value = "Outside Big Island";
-			hurrSrc.value = "Otuside Big Island";
-		}
-		*/
-		
 		$("#HazArray").show();
 		
 		//Dialog box 
@@ -360,27 +298,6 @@ google.maps.event.addListener(searchBox, 'places_changed', function() {
 				height: 400
 			});
 		});
-		
-		//<!--evacuation zone polygon-->
-		/*var zoneCoords1 = [
-			//new google.maps.LatLng(doc[0].gpolygons[8].coords)
-			
-		];	
-		
-	
-		var hawaiiZone1 = new google.maps.Polygon({
-			paths: zoneCoords1
-		});
-
-		hawaiiZone1.setMap(map);*/
-		//<!--check if point is within the evacuation zone-->
-		/*var locOutput = document.getElementById("locOutput");
-		if (google.maps.geometry.poly.containsLocation(grabLoc, hawaiiZone1)){
-			locOutput.value = '1';
-		}else{
-			locOutput.value = '0';
-		}*/
-
 	};
 });
 

@@ -1,4 +1,10 @@
 <?php 
+/*Author: Robert Peralta */
+
+/*
+This script will allow the user to login from the 
+login form and mark login status as true.
+*/
 
 	require_once('config.php');
 	require_once('functions.php');

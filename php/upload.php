@@ -1,4 +1,11 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will allow the user to choose a file on their
+system and upload it to our server.
+*/
+
 session_start();
 include('dbConnect.php');
 

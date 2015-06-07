@@ -1,3 +1,11 @@
+/*Author: Robert Peralta*/
+
+/* 
+This script will use xml requests to retrieve and send 
+data to the database through front end forms, addressed
+to an admin of the system.
+*/
+
 function showHazard(str) {
 	if (str == "") {
 		document.getElementById("hazTable").innerHTML = "";

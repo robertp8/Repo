@@ -1,4 +1,11 @@
 <?php
+/*Author: Robert Peralta*/
+
+/*
+This script will display a form for the admin to enter
+that will allow for a button to be added that corresponds
+to the KML files in the server.
+*/
 
 	$q = strval($_GET['q']);
 	echo '<form action="php/addBtnMod.php" method="post">';

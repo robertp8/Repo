@@ -1,3 +1,9 @@
+/*Author: Robert Peralta */
+
+/*
+Allows the user to print out the hazard array information 
+*/
+
 function PrintDiv() {
 	var tsunData1 = document.getElementById("tsuDesc").innerHTML;
 	var tsunData2 = document.getElementById("tsuMit").innerHTML;

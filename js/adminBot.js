@@ -1,12 +1,23 @@
+/*Author: Robert Peralta */
+
+/*
+This script will allow an admin to modify hazard data 
+which will be automatically updated through ajax calls 
+to the database. 
+*/
+
 //jquery code
 $(document).ready(function(){
 	
+	//Define HTML canvas as c
 	var c = $('#map-canvas');
+	//Define container to hold canvas parent
 	var container = $(c).parent();
 
 	//Run function when browser resizes
 	$(window).resize( respondCanvas );
 
+	//Define respond function to grab width and height of canvas
 	function respondCanvas(){ 
 		c.attr('width', $(container).width() ); //max width
 		c.attr('height', $(container).height() ); //max height
@@ -17,155 +28,11 @@ $(document).ready(function(){
 	//Initial call 
 	respondCanvas();
 	
-	//side bar layer selection buttons etc
-	$("#sidebar").hide();
-	$("#AdminMenu").hide();
-	$("#viewForm").hide();
-	$("#modHaz").hide();
-	$("#addHazardInfo").hide();
-	$("#PrintDialog").hide();
-	$("#addForm").hide();
-	$("#addMethod").hide();
-	
-	$("#closeSidebar").click(function(){
-		$("#sidebar").hide();
-		$("#content").css("width", "100%");
-		$("#sideBarBtn").show();
-		$("#AdminBtn").show();
-	});
-	
-	$("#closeAdminMenu").click(function(){
-		$("#sidebar").hide();
-		$("#content").css("width", "100%");
-		$("#sideBarBtn").show();
-		$("#AdminBtn").show();
-		$("#AdminMenu").hide();
-	});
-	
-	$("#sideBarBtn").click(function(){
-		$(this).hide();
-		$("#content").css("width", "85%");
-		$("#sidebar").show();
-		$("#AdminBtn").hide();
-	});
-	
-	$("#AdminBtn").click(function(){
-		$(this).hide();
-		$("#content").css("width", "88%");
-		$("#sideBarBtn").hide();
-		$("#AdminMenu").show();
-	});
-	
-	$("#viewData").click(function(){
-		$("#mapArea").hide();
-		$("#Print").hide();
-		$("#modHaz").hide();
-		$("#addForm").hide();
-		$("#addHazardInfo").hide();
-		$("#addMethod").hide();
-		$("#viewForm").show();
-	});
-	
-	$("#modifyData").click(function(){
-		$("#mapArea").hide();
-		$("#Print").hide();
-		$("#viewForm").hide();
-		$("#addForm").hide();
-		$("#addHazardInfo").hide();
-		$("#addMethod").hide();
-		$("#modHaz").show();
-	});
-	
-	$("#addData").click(function(){
-		$("#mapArea").hide();
-		$("#Print").hide();
-		$("#viewForm").hide();
-		$("#addForm").hide();
-		$("#addHazardInfo").hide();
-		$("#modHaz").hide();
-		$("#addMethod").show();
-	});
-	
-	$("#insertHaz").click(function(){
-		$("#addMethod").hide();
-		$("#addForm").show();
-	});
-	
-	$("#insertInfo").click(function(){
-		$("#addMethod").hide();
-		$("#addHazardInfo").show();
-	});
-	
-	$("#backButton").click(function(){
-		$("#addHazardInfo").hide();
-		$("#addMethod").show();
-	});
-	
-	$("#back").click(function(){
-		$("#mapArea").show();
-		$("#Print").show();
-		$("#viewForm").hide();
-		
-	});
-	
-	$("#back1").click(function(){
-		$("#mapArea").show();
-		$("#Print").show();
-		$("#modHaz").hide();
-	
-	});
-	
-	$("#back2").click(function(){
-		$("#addMethod").show();
-		$("#addForm").hide();
-	
-	});
-	
-	$("#back3").click(function(){
-		$("#mapArea").show();
-		$("#Print").show();
-		$("#addMethod").hide();
-		$("#addForm").hide();
-	});
-	
 	$(function(){
 		$("#HazArray").menu();
-	});
-			
-	/*$(function(){
-		$("#coordData").accordion();
-	});
+	});		
 	
-	$(function(){
-		$("#coordMit").accordion();
-	});
-	
-	$(function(){
-		$("#coordSrc").accordion();
-	});*/
-	
-	//hazard array hover style
-	$(function(){
-		$("#tsunData").accordion({
-			heightStyle: "content",
-			event: "click hoverintent"
-		});
-	});
-	
-	$(function(){
-		$("#lavaData").accordion({
-			heightStyle: "content",
-			event: "click hoverintent"
-		});
-	});
-	
-	$(function(){
-		$("#hurrData").accordion({
-			heightStyle: "content",
-			event: "click hoverintent"
-		});
-	});
-	
+	//Allows the modified data to be updated without refreshing the page.
 	function refreshTable(str){
 		if (window.XMLHttpRequest) {
 			// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -179,36 +46,45 @@ $(document).ready(function(){
 				document.getElementById("updateHazTable").innerHTML = xmlhttp.responseText;
 			}
 		}
+		//Gets requested string data fro updateHazards.php
 		xmlhttp.open("GET","php/updateHazards.php?q="+str,true);
 		xmlhttp.send();
 	}
 	
+	//Initial variables for adding and deleting data within table
 	var i = 1;
 	var y = 1;
 	var d = 0;
 	var e = 0;
 	
+	//Modify data on the newly added row
 	$("#modHaz").on("click", ".addRow", function(){
 		
+		//Define Unique ID given from the from modify hazard form
 		var j = $("#uniqueID").val(); 
+		//Define Hazard ID from database
 		var hazID = $("#HazID").val();
 		
+		//Zone level for given hazard
 		var n = $("#zoneID_"+i).val();
 		var zoneID = Number(n);
 		d = zoneID + e;
 		
+		//Initial variables for Haz data
 		var hazval = 0;
 		var hazdesc = "";
 		var hazmit = "";
 		var hazsrc = "";
 		var data1 = "";
 	
+		//Displays two colors for the hazard rows one for odd and one for even.
 		if(y%2){
 			data1="<tr id='" + i + "' class='editRow'>";
 		}else{
 			data1="<tr id='" + i + "' bgcolor='C2C2C2' class='editRow'>";
 		}
 		
+		//Setting up the modified HTML code that is changed as rows are added
 		data1 += "<input type='hidden' name='zoneID_" + i + "' id='zoneID_" + i + "' value='" + d + "'>" +
 				  "<td><input id='check_" + d + "' type='checkbox' class='case'/></td>" + 
 					"<td class='edit_td'>" +
@@ -225,11 +101,14 @@ $(document).ready(function(){
 						"<input type='text' class='editCell' id='hazsrc_" + i + "' value=''/></input></td>" +
 				  "</tr>" +
 				  "<input type='hidden' name='HazID' id='HazID_" + i + "' value='" + hazID + "'>" ;
-				  
+		
+		//Modify the data in the table
 		$('table').append(data1);
 		
+		//String data that is queried to the database
 		var val = 'Hazard_idHazard=' + hazID + '&hazVal=' + hazval + '&hazDesc=' + hazdesc + '&hazMit=' + hazmit + '&hazSrc=' + hazsrc;
 		
+		//Ajax call for asynchronous response
 		$.ajax({
 			type: "POST",
 			url: "php/addQuery.php",
@@ -241,27 +120,34 @@ $(document).ready(function(){
 			}
 		});
 		
+		//Update variables for a new row to be implemented
 		y++;
 		i++;
 		e++;
 		
 	});
 	
+	//Modify data that already exists within the table
 	$("#modHaz").on("click", ".editRow", function() {
 		
+		//retrieve the id for the row
 		var ID = $(this).attr('id');
+		
+		//hide all info within static cell
 		$("#hazv_"+ID).hide();
 		$("#hazd_"+ID).hide();
 		$("#hazm_"+ID).hide();
 		$("#hazs_"+ID).hide();
 		
+		//Show all data with in dynic cell
 		$("#hazval_"+ID).show();
 		$("#hazdesc_"+ID).show();
 		$("#hazmit_"+ID).show();
 		$("#hazsrc_"+ID).show();
 		
 	}).on("change", ".editRow", function(){
-	
+		
+		//retrieve row id and other form values given when data entered
 		var ID = $(this).attr('id');
 		var zoneID = $("#zoneID_"+ID).val();
 		var hazdesc = $("#hazdesc_"+ID).val();
@@ -271,8 +157,10 @@ $(document).ready(function(){
 		var hazID = $("#HazID").val();
 		//$("#hazd_"+ID).html('<img src="images/load.gif" />');
 		
+		//String data to be queried to the database
 		var val = 'idHazardZone=' + zoneID + '&hazDesc=' + hazdesc + '&hazMit=' + hazmit + '&hazSrc=' + hazsrc + '&hazVal=' + hazval;
 		
+		//Ajax call to update any given info
 		$.ajax({
 			type: "POST",
 			url: "php/updatequery.php",
@@ -296,16 +184,22 @@ $(document).ready(function(){
 		});
 	});
 	
+	//Delete a row from the table
 	$("#modHaz").on("click", ".deleteRow", function() {
 		
+		//Finds the checked row of the delete section on table form
 		var ID = $('.case:checkbox:checked').closest('tr').attr('id');
 		
+		//retrieves zone id
 		var zoneID = $("#zoneID_"+ID).val();
 		
+		//String data to be passed to the database
 		var val = 'idHazardZone=' + zoneID;
 		
+		//Removes the row from the form table
 		$('.case:checkbox:checked').parents("tr").remove();
 		
+		//Ajax call to delete the given haz data of that row
 		$.ajax({
 			type: "POST",
 			url: "php/deleteQuery.php",
@@ -327,7 +221,7 @@ $(document).ready(function(){
 		$(".text").show();
 	});
 	
-	
+	//Table refresh 
 	$.event.special.hoverintent = {
 		setup: function() {
 			$( this ).bind( "mouseover", jQuery.event.special.hoverintent.handler );
@@ -394,51 +288,18 @@ $(document).ready(function(){
 	$("#HazArray").hide();
 });
 
-//Shows current location
-/*var x = document.getElementByID("message");
-
-function getLocation() {
-
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(showPosition);
-	} else { 
-		x.innerHTML = "Geolocation is not supported by this browser.";
-	}
-}*/
-
 //google maps api functions, geoxml parsing, &
 function initialize(){
+
+	//Call the view hazard script to view the hazards
 	$.getScript("js/viewHazData.js", function(){
 	
 	});
 	
+	//Call the display script to display buttons
 	$.getScript("js/display.js", function(){
 		//console.log('worked');
 	});
-	
-	/*var x = document.createElement('script');
-	x.src = 'js/display.js';
-	document.getElementsByTagName("head")[0].appendChild(x);*/
-		
-	//KML Layers
-	/*var tsunamiEvac = new google.maps.KmlLayer({
-		url: 'http://oos.soest.hawaii.edu/pacioos/kml/zzz_obsolete/tsunami_evac_zones.kml'
-		
-	});
-	
-	var tsunamiOutline = new google.maps.KmlLayer({
-		url: 'http://geocommons.com/overlays/3307.kml'
-	});
-	
-	$("#tsunami").click(function(){
-		tsunamiOutline.setMap(null);
-		tsunamiEvac.setMap(map);
-	});
-	
-	$("#hurricane").click(function(){
-		tsunamiOutline.setMap(map);
-		tsunamiEvac.setMap(null);
-	});*/
 	
 	function showError(error) {
 		switch(error.code) {

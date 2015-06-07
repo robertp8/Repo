@@ -1,4 +1,11 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will query to the database to show hazard
+info of a specified hazard with in the database
+*/
+
 include('dbConnect.php');
 
 $id = $_POST['Hazard_idHazard'];

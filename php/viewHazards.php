@@ -1,4 +1,11 @@
 <?php 
+/*Author: Robert Peralta */
+
+/*
+This script will display the hazard table from the front
+end.
+*/
+
 include('dbConnect.php');
 
 $q = intval($_GET['q']);

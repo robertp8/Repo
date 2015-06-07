@@ -1,4 +1,12 @@
 <?php
+/*Author: Robert Peralta*/
+
+/*
+This script will display a form for the admin to enter data
+that will allow for info to be added for a specific type of 
+hazard
+*/
+
 include('dbConnect.php');
 
 $q = intval($_GET['q']);

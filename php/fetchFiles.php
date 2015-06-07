@@ -1,4 +1,10 @@
 <?php 
+/*Author: Robert Peralta */
+
+/*
+This script will query to the database to show specified
+files with in the database or server
+*/
 
 	echo "<select name=\"fileName\" onchange=\"addFile(this.value)\">";
 	

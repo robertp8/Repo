@@ -1,4 +1,14 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will allow the admin to delete buttons to
+the site and automatically modify the display.js script
+and the viewbutton.js script. This script uses php 
+regular expressions  to match specific patterns and modify
+them to add or delete data.
+*/
+
 	session_start();
 	
 	$btnName = $_POST['btnName'];

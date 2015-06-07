@@ -1,4 +1,11 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will query to the database to update the hazard
+data from a specified hazard.
+*/
+
 include('dbConnect.php');
 
 $id = $_POST['idHazardZone'];

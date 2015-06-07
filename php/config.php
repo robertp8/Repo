@@ -1,4 +1,9 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will define the database
+*/
 
 define('DB_HOSTNAME', 'localhost');
 define('DB_USERNAME', 'root');

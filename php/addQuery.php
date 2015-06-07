@@ -1,4 +1,11 @@
 <?php
+/*Author: Robert Peralta*/
+
+/*
+This script will query to the database to add hazard info
+for a specified hazard
+*/
+
 session_start();
 include('dbConnect.php');
 

@@ -1,4 +1,11 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will check if an admin is logged in
+*/
+
+
     session_start();
     if (isset($_SESSION['username'])) {
       // This session already exists, should already contain data

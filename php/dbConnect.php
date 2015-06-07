@@ -1,4 +1,10 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will query will connect us to the database
+*/
+
 $servername = "localhost";
 $database = "hazards";
 $username = "root";

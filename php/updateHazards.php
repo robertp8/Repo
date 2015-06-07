@@ -1,4 +1,11 @@
 <?php 
+/*Author: Robert Peralta */
+
+/*
+This script will display the table form of hazard data to be
+modified, added or deleted from the front end.
+*/
+
 include('dbConnect.php');
 
 $q = intval($_GET['q']);

@@ -1,4 +1,10 @@
 <?php 
+/*Author: Robert Peralta */
+
+/*
+This script will query to the database to show specified
+hazards with in the database
+*/
 
 	echo "<select class=\"selectpicker\" name=\"hazName\" onchange=\"modifyHazard(this.value)\">";
 	

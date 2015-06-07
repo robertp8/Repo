@@ -1,4 +1,14 @@
 <?php
+/*Author: Robert Peralta*/
+
+/*
+This script will allow the admin to add buttons to
+the site and automatically modify the display.js script
+and the viewbutton.js script. This script uses php 
+regular expressions  to match specific patterns and modify
+them to add or delete data.
+*/
+
 	require_once('config.php');
 	require_once('functions.php');
 	session_start();

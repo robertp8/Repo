@@ -1,4 +1,9 @@
 <?php
+/*Author: Robert Peralta */
+
+/*
+This script will check to see if an admin is logged in.
+*/
 
 function redirect($page) {
 	
